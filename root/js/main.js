@@ -1,11 +1,11 @@
 $(document).ready(function() {
-	var image_url = "/images/desktop/background-" + Math.floor((Math.random() * 17) + 1) + ".jpg";
+	var screen_type = $(window).width() > 700 ? "desktop" : "mobile";  //Mobile or desktop background
+	var image_url = "/images/" + screen_type + "/background-" + Math.floor((Math.random() * 17) + 1) + ".jpg";
 	
 	//Preload the background
 	preloadPictures([image_url], function(){
-    	$("#landing-container").css({"background-image": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(" + image_url + ")", 
-								 "background-size" :  "100%",
-								 "animation" : "fadein 2s"});
+    	$("#landing-container").addClass("landing-container");
+		$("#landing-container").css({"background-image" : "linear-gradient(rgba(0, 0, 0, 0.298039), rgba(0, 0, 0, 0.298039)), url(" + image_url + ")"})
 	});
 
 });
