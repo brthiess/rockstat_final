@@ -1,8 +1,9 @@
 $(document).ready(function() {
+	var image_url = "/images/desktop/background-" + Math.floor((Math.random() * 17) + 1) + ".jpg";
 	
 	//Preload the background
-	preloadPictures(['http://tgam.wpengine.netdna-cdn.com/wp-content/uploads/2014/02/OLYK3323-OLYMPICS-CURLING-.jpg'], function(){
-    	$("#landing-container").css({"background-image": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(http://tgam.wpengine.netdna-cdn.com/wp-content/uploads/2014/02/OLYK3323-OLYMPICS-CURLING-.jpg)", 
+	preloadPictures([image_url], function(){
+    	$("#landing-container").css({"background-image": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(" + image_url + ")", 
 								 "background-size" :  "100%",
 								 "animation" : "fadein 2s"});
 	});
