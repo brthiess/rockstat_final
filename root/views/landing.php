@@ -7,14 +7,8 @@
 		</div>
 		
 		<div class="logo-container">
-			<div class="house-container">
-				<div class="logo-house twelve-foot"></div>
-				<div class="logo-house eight-foot"></div>
-				<div class="logo-house four-foot"></div>
-				<div class="logo-house button"></div>
-			</div>
-			<div class="logo-text"><p class="gray-text">R&nbsp;&nbsp;ck</p>Stat</div>
-	</div>
+			<img src="/images/logo.png"/>
+		</div>
 	</div>
 
 </div>

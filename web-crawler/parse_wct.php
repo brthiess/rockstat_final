@@ -1,6 +1,6 @@
 <?php
 include_once "simple_html_dom.php";
-
+include_once "game.php";
 
 //Is given the html for a world curl page 
 //and returns an array of game objects
@@ -20,16 +20,27 @@ function parse_wct_html($html){
 //Is given a page with scores on it
 function parse_wct_event_page($html) {
 	//First check to make sure we are on a page that has scores on it.  If not, return null
-	if (!wct_page_has_scores_on_it($html)
+	if (!wct_page_has_scores_on_it($html))
 		return null;
 	
 	
-	
+	//Get each game
+	$games = $html->find(".linescorebox");
+	foreach($games as $game){
+		$teams = $game->find(".linescoreteam");
+		foreach($teams as $team){
+			$team_name = $team->find(".linescoreteamlink")->plaintext;
+		}
+	}	
 }
 
 //Check to see if the page has curling scores on it.
 function wct_page_has_scores_on_it($html) {
-	
+	$teams = $html->find('.linescoreteamlink');
+	if (count($teams) == 0) {
+		return false;
+	}
+	return true;
 }
 
 //Returns the page type 
