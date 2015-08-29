@@ -10,9 +10,7 @@
 			array_push($this->ends, new End($team1_score, $team2_score));
 		}
 		public function print_linescore(){
-			foreach($this->ends as $end){
-				print_r($this->ends);
-			}
+			print_r($this->ends);
 		}
 	}
 ?>

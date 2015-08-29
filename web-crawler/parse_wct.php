@@ -23,7 +23,11 @@ function parse_wct_event_page($html) {
 	if (!wct_page_has_scores_on_it($html))
 		return null;
 	
-	$game_objects = array();
+	$game_objects = array();	
+	
+	//Get the event
+	$event = get_event_wct($html);
+	
 	//Get each game
 	$games = $html->find(".linescorebox");
 	foreach($games as $game){
@@ -40,24 +44,13 @@ function parse_wct_event_page($html) {
 		}
 		
 		//Assign hammer
-		$hammer = $game->find(".linescorehammer");
-		//Check if the upper linescore team has hammer
-		if (strpos($hammer[0]->plaintext, 'hammer.gif') !== false) {
-			$hammer = 0;
-		}
-		else {
-			$hammer = 1;
-		}
-		$linescore = new LineScore();
-		$ends = $game->find(".linescoreend");
-		$number_of_ends = count($ends)/2;
-		for($i = 0; $i < $number_of_ends; $i++){
-			echo $ends[$i]->plaintext;
-			$linescore->addEnd($ends[$i]->plaintext, $ends[$i + $number_of_ends]->plaintext);
-		}
-		$linescore->print_linescore();
+		$hammer = get_hammer_wct($game);
 		
-	}	
+		//Get the linescore
+		$linescore = get_linescore_wct($game);
+
+		
+	}
 }
 
 //Check to see if the page has curling scores on it.
@@ -125,5 +118,49 @@ function get_page_type_wct($html){
 	else
 		return ERROR;
 	
+}
+
+
+//Get the hammer given a html game object on the world curl website
+function get_hammer_wct($game) {
+	$hammer = $game->find(".linescorehammer");
+	//Check if the upper linescore team has hammer
+	if (strpos($hammer[0]->plaintext, 'hammer.gif') !== false) {
+		return 0;
+	}
+	else {
+		return 1;
+	}	
+}
+
+function get_linescore_wct($game){
+	$linescore = new LineScore();
+	$ends = $game->find(".linescoreend");
+	$number_of_ends = count($ends)/2;
+	
+	//Common sense check.  If game has 2 or less ends something is wrong.
+	if ($number_of_ends <=2) {
+		echo 'Found a game with <= 2 ends';
+	}
+	for($i = 0; $i < $number_of_ends; $i++){
+		$linescore->addEnd(str_replace("&nbsp;", "", $ends[$i]->plaintext), str_replace("&nbsp;", "", $ends[$i + $number_of_ends]->plaintext));
+	}
+	return $linescore;
+}
+
+function get_event_wct($html) {
+	$event_name = $html->find(".wctlight")[0]->plaintext;
+	//Common Sense check
+	if (strlen($event_name) <= 3) {
+		echo 'Short Event name found';
+	}
+	
+	$event_location = $html->find(".wctlight")[1]->plaintext;
+	//Common Sense check
+	if (strlen($event_location) <= 3) {
+		echo 'Short Event name found';
+	}
+	
+	$event_date_html = $html->str_replace("&nbsp;", "", find(".wctlight")[3]->plaintext);
 }
 ?>
