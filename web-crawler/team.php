@@ -1,4 +1,5 @@
 <?php
+	include_once 'curling.php';
 	class Team {
 		public $players;
 		public $gender;

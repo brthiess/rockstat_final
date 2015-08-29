@@ -1,6 +1,6 @@
 <?php
 include_once "simple_html_dom.php";
-include_once "game.php";
+include_once "curling.php";
 
 //Is given the html for a world curl page 
 //and returns an array of game objects
@@ -23,14 +23,40 @@ function parse_wct_event_page($html) {
 	if (!wct_page_has_scores_on_it($html))
 		return null;
 	
-	
+	$game_objects = array();
 	//Get each game
 	$games = $html->find(".linescorebox");
 	foreach($games as $game){
-		$teams = $game->find(".linescoreteam");
-		foreach($teams as $team){
-			$team_name = $team->find(".linescoreteamlink")->plaintext;
+		$teams_html = $game->find(".linescoreteam");
+		
+		//Get both teams
+		$teams = array();
+		foreach($teams_html as $team){
+			array_push($teams,$team->find(".linescoreteamlink")[0]->plaintext);
 		}
+		//Check that there are only 2 teams
+		if (count($teams) != 2) {
+			echo 'Found a game with' . count($teams) . 'teams';
+		}
+		
+		//Assign hammer
+		$hammer = $game->find(".linescorehammer");
+		//Check if the upper linescore team has hammer
+		if (strpos($hammer[0]->plaintext, 'hammer.gif') !== false) {
+			$hammer = 0;
+		}
+		else {
+			$hammer = 1;
+		}
+		$linescore = new LineScore();
+		$ends = $game->find(".linescoreend");
+		$number_of_ends = count($ends)/2;
+		for($i = 0; $i < $number_of_ends; $i++){
+			echo $ends[$i]->plaintext;
+			$linescore->addEnd($ends[$i]->plaintext, $ends[$i + $number_of_ends]->plaintext);
+		}
+		$linescore->print_linescore();
+		
 	}	
 }
 
