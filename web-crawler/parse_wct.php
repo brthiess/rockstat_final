@@ -1,6 +1,8 @@
 <?php
 include_once "simple_html_dom.php";
 include_once "curling.php";
+include_once "constants.php";
+include_once "math.php";
 
 //Is given the html for a world curl page 
 //and returns an array of game objects
@@ -49,7 +51,7 @@ function parse_wct_event_page($html) {
 		//Get the linescore
 		$linescore = get_linescore_wct($game);
 
-		
+		//
 	}
 }
 
@@ -148,6 +150,8 @@ function get_linescore_wct($game){
 	return $linescore;
 }
 
+
+//Is given the html for a page and returns an event object
 function get_event_wct($html) {
 	$event_name = $html->find(".wctlight")[0]->plaintext;
 	//Common Sense check
@@ -160,7 +164,41 @@ function get_event_wct($html) {
 	if (strlen($event_location) <= 3) {
 		echo 'Short Event name found';
 	}
-	
+	//Get the event date
 	$event_date_html = $html->str_replace("&nbsp;", "", find(".wctlight")[3]->plaintext);
+	$start_date = mktime(0,0,0,get_month_wct($event_date_html, "start"), get_day_wct($event_date_html, "start"), get_year_wct($event_date_html, "start"));
+	$end_date = mktime(0,0,0,get_month_wct($event_date_html, "end"), get_day_wct($event_date_html, "end"), get_year_wct($event_date_html, "end"));
+	
+	
+}
+
+//Parse out the month from a date string.  
+function get_month_wct($date, $time) {
+	//Go through each month and check if it exists in the date string
+	$month = -1;
+	for($i = 0; $i < count($MONTH); $i++) {
+		//Check each month
+		if (stripos($date, $MONTH[$i]) !== false) {
+			if ($time == "start") {
+				//If the previous month exists in the string
+				if (stripos($date, $MONTH[mod($i - 1, 12)]) !== false) {
+					//This is the correct month
+					$month = mod($i - 1, 12);
+				}
+				else {
+					$month = $i;;
+				}
+			}
+			else {
+				//If the next month exists in the string
+				if (stripos($date, $MONTH[mod($i + 1, 12)]) !== false) {
+					$month = mod($i + 1, 12);
+				}
+				else {
+					$month = $i;	
+				}
+			}
+		}
+	}
 }
 ?>

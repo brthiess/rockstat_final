@@ -12,5 +12,6 @@ define("WOMEN", 8);
 define("WCT_EVENT_PAGE", 9);
 define("WCT_SCHEDULE_PAGE", 10);
 
+$MONTHS = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"); 
 
 ?>
