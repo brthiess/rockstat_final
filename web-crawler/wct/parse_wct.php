@@ -1,8 +1,10 @@
 <?php
-include_once "simple_html_dom.php";
-include_once "curling.php";
-include_once "constants.php";
-include_once "math.php";
+$directory = dirname(__DIR__) . "/wct/";
+include_once $directory .  "../simple_html_dom.php";
+include_once $directory . "../curling.php";
+include_once $directory . "../constants.php";
+include_once $directory . "../math.php";
+include_once $directory . "wct_event.php";
 
 //Is given the html for a world curl page 
 //and returns an array of game objects
@@ -29,6 +31,8 @@ function parse_wct_event_page($html) {
 	
 	//Get the event
 	$event = get_event_wct($html);
+	$event->print_event();
+	
 	
 	//Get each game
 	$games = $html->find(".linescorebox");
@@ -50,8 +54,7 @@ function parse_wct_event_page($html) {
 		
 		//Get the linescore
 		$linescore = get_linescore_wct($game);
-
-		//
+		print_r($linescore);
 	}
 }
 
@@ -162,43 +165,22 @@ function get_event_wct($html) {
 	$event_location = $html->find(".wctlight")[1]->plaintext;
 	//Common Sense check
 	if (strlen($event_location) <= 3) {
-		echo 'Short Event name found';
+		echo 'Short Event location found';
 	}
 	//Get the event date
-	$event_date_html = $html->str_replace("&nbsp;", "", find(".wctlight")[3]->plaintext);
-	$start_date = mktime(0,0,0,get_month_wct($event_date_html, "start"), get_day_wct($event_date_html, "start"), get_year_wct($event_date_html, "start"));
-	$end_date = mktime(0,0,0,get_month_wct($event_date_html, "end"), get_day_wct($event_date_html, "end"), get_year_wct($event_date_html, "end"));
+	$event_date_html = str_replace("&nbsp;", "", $html->find(".wctlight")[3]->plaintext);
+	$start_date = get_date_wct($event_date_html, "start");
+	$end_date = get_date_wct($event_date_html, "end");
 	
+	//Get the event purse
+	$event_purse = get_purse_wct($html->find(".wctlight")[5]->plaintext);
 	
+	$event_currency = get_currency_wct($html->find(".wctlight")[5]->plaintext);
+	
+	$event_gender = get_gender_wct($html);
+
+	return new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender);
 }
 
-//Parse out the month from a date string.  
-function get_month_wct($date, $time) {
-	//Go through each month and check if it exists in the date string
-	$month = -1;
-	for($i = 0; $i < count($MONTH); $i++) {
-		//Check each month
-		if (stripos($date, $MONTH[$i]) !== false) {
-			if ($time == "start") {
-				//If the previous month exists in the string
-				if (stripos($date, $MONTH[mod($i - 1, 12)]) !== false) {
-					//This is the correct month
-					$month = mod($i - 1, 12);
-				}
-				else {
-					$month = $i;;
-				}
-			}
-			else {
-				//If the next month exists in the string
-				if (stripos($date, $MONTH[mod($i + 1, 12)]) !== false) {
-					$month = mod($i + 1, 12);
-				}
-				else {
-					$month = $i;	
-				}
-			}
-		}
-	}
-}
+
 ?>

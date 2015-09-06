@@ -7,7 +7,7 @@
 		</div>
 		
 		<div class="logo-container">
-			<img src="/images/logo.png"/>
+			<img src="/images/logo2.png"/>
 		</div>
 	</div>
 

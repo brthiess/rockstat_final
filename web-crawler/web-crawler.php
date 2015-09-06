@@ -1,10 +1,10 @@
 <?php 
 include_once "simple_html_dom.php";
 include_once "constants.php";
-include_once "parse_wct.php";
+include_once "wct/parse_wct.php";
 
 // Create DOM from URL or file
-$MAIN_URL = 'test.html';
+$MAIN_URL = 'http://www.worldcurl.com/events.php?eventid=3810&view=Scores&showdrawid=11';
 
 $next_url = $MAIN_URL;
 while($next_url != null){
