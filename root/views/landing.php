@@ -3,6 +3,7 @@
 	<div id="search-container">
 		<div id="search-input-container">
 			<input id="search-input" placeholder="Search curling stats..."></input>
+			<ul><li>Hello</li><li>test</li></ul>
 			<div id="search-button"></div>
 		</div>
 		
