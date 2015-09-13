@@ -4,9 +4,16 @@
 		public $players;
 		public $gender;
 		
-		public function __construct($gender) {
+		public function __construct() {
 			$this->players = array();
-			$this->gender = $gender;
+		}
+		
+		public function add_player($player) {
+			array_push($this->$players, $player);
+		}
+		
+		public function number_of_players() {
+			return count($players);
 		}
 
 

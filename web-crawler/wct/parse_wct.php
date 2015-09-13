@@ -6,56 +6,99 @@ include_once $directory . "../constants.php";
 include_once $directory . "../math.php";
 include_once $directory . "wct_event.php";
 
-//Is given the html for a world curl page 
+//Is given the html dom object for a world curl page 
 //and returns an array of game objects
 //Returns null if nothing to parse
 //Otherwise returns an array of game objects
-function parse_wct_html($html){
-	$page_type = get_page_type_wct($html);
-	if ($page_type == WCT_EVENT_PAGE) 
-		parse_wct_event_page($html);
-	else {
-		if ($page_type == ERROR)
-			echo "\n*****ERROR: Can't Determine Page Type****";
-		return null;	
+function get_event_games_wct($event_url){
+	$game_objects = array();
+	$scores_url = $event_url . '&view=Scores';
+	$scores_html = get_html($scores_url);	
+	$number_of_draws = count($scores_html->find(".linescoredrawlink")) + 1;
+	for($draw_id = 1; $draw_id <= $number_of_draws; $draw_id++) {
+		$draw_url = $event_url . '&view=Scores&showdrawid=' . $draw_id;
+		$html = get_html($draw_url);
+		$page_type = get_page_type_wct($html);
+		if ($page_type == WCT_EVENT_PAGE) 
+			array_merge($game_objects, parse_wct_event_page($html));
+		else {
+			if ($page_type == ERROR)
+				echo "\n*****ERROR: Can't Determine Page Type****";	
+		}
 	}
+	return $game_objects;
+}
+
+//Gets the basic event information from the schedule_page and event url
+function get_basic_event_information_wct($schedule_html, $event_url) {
+	//if page contains pink background
+	$event_gender = get_gender_wct($schedule_html);
+	if ($event_gender == -1) {
+		echo "\nNo Gender Found.  Error";
+	}
+	$event_name = get_event_name_wct($schedule_html, $event_url);
+	$event_location = get_event_location_wct($schedule_html, $event_url);
+	$start_date = get_event_date_wct($schedule_html, $event_url, "start");
+	$end_date = get_event_date_wct($schedule_html, $event_url, "end");
+	$event_purse = get_event_purse_wct($schedule_html, $event_url);
+	$event_currency = get_event_currency_wct($schedule_html, $event_url);	
+	
+	$event = new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender);
+	$event->print_event();
+	return new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender);
 }
 
 //Is given a page with scores on it
+//And returns an array of games
 function parse_wct_event_page($html) {
 	//First check to make sure we are on a page that has scores on it.  If not, return null
-	if (!wct_page_has_scores_on_it($html))
+	if (!wct_page_has_scores_on_it($html)) {
+		echo "\nERROR: Page has no scores";
 		return null;
+	}
 	
 	$game_objects = array();	
-	
-	//Get the event
-	$event = get_event_wct($html);
-	$event->print_event();
 	
 	
 	//Get each game
 	$games = $html->find(".linescorebox");
-	foreach($games as $game){
-		$teams_html = $game->find(".linescoreteam");
+	foreach($games as $game){	
 		
 		//Get both teams
 		$teams = array();
-		foreach($teams_html as $team){
-			array_push($teams,$team->find(".linescoreteamlink")[0]->plaintext);
+		$players_html = $game->next_sibling()->find("tbody tr td table tbody tr td");
+		$player_count = 0;
+		$team1 = new Team();
+		$team2 = new Team();
+		foreach($players_html as $player){
+
+			//Get each player
+			$position = $player->find("tr")[0]->plaintext;
+			$image = $player->find("tr")[1]->plaintext;
+			$name = $player->find("tr")[2]->plaintext;	
+			
+			if ($player_count < 4) {
+				$team1->add_player(new Player($name, $name, $position));
+			}
+			else if ($player_count < 8) {
+				$team2->add_player(new Player($name, $name, $position));
+			}
+			else {
+				echo "ERROR: More than 8 players";
+			}
 		}
-		//Check that there are only 2 teams
-		if (count($teams) != 2) {
-			echo 'Found a game with' . count($teams) . 'teams';
-		}
+
 		
 		//Assign hammer
 		$hammer = get_hammer_wct($game);
 		
 		//Get the linescore
 		$linescore = get_linescore_wct($game);
-		print_r($linescore);
+		
+		//Push a new game onto the game_objects array
+		array_push($game_objects, new Game($team1, $team2, $linescore, $hammer));
 	}
+	return $game_objects;
 }
 
 //Check to see if the page has curling scores on it.

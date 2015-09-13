@@ -4,37 +4,46 @@ include_once "constants.php";
 include_once "wct/parse_wct.php";
 
 // Create DOM from URL or file
-$MAIN_URL = 'http://www.worldcurl.com/events.php?eventid=3810&view=Scores&showdrawid=11';
+$MAIN_URL = 'test.html';
 
-$next_url = $MAIN_URL;
-while($next_url != null){
-	$html = get_html($next_url);
-	$parsed_html = parse_html($html);
-	if ($parsed_html != null)
-		input_html($parsed_html);
-	$next_url = get_next_url($html);	
+$schedule_url = 'schedule.html';
+$schedule_html = get_html($schedule_url);
+
+$next_event_url = get_next_event_url($schedule_html, null);	
+while($next_event_url != null){
+	$parsed_event_html = parse_event_html($schedule_html, $next_event_url);
+	if ($parsed_event_html != null)
+		input_html($parsed_event_html);
+	$next_event_url = get_next_event_url($schedule_html, $next_event_url);	
 }
 
-//Gets the html from the given url
+//Gets the html dom object from the given url
 function get_html($url){
 	return file_get_html($url);
 }
 
-//Is given the html for a page, and returns 
-//an array of games
+//Is given the url for an event page, and returns 
+//an event object.
 //Returns null if nothing to parse
-function parse_html($html){
-	$page_type = get_page_type($html);
+function parse_event_html($schedule_html, $event_url){
+	$page_type = get_page_type($schedule_html);
 	if ($page_type == WORLD_CURL){
-		return parse_wct_event_page($html);
+		$event = get_basic_event_information_wct($schedule_html, $event_url);
+		$event->games = get_event_games_wct($event_url);
+		return $event;
 	}
 	else if ($page_type == CCA){
-		return parse_cca_event_page($html);
+		$event = get_basic_event_information_cca($schedule_html, $event_url);
+		$event->games = get_event_games_cca(get_html($event_url));
+		return $event;
 	}	
 }
 
-//Returns the next URL to visit
-function get_next_url($html) {
+//Returns the next event URL to visit
+function get_next_event_url($schedule_html, $previous_event_url) {
+	if ($previous_event_url == null){
+		return "http://www.worldcurl.com/events.php?task=Event&eventid=3805";
+	}
 	return null;
 }
 

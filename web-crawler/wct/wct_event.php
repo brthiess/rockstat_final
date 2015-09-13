@@ -1,7 +1,9 @@
 <?php
 
-function get_date_wct($event_date_html, $time) {
-	return mktime(0,0,0,get_month_wct($event_date_html, $time), get_day_wct($event_date_html, $time), get_year_wct($event_date_html));
+function get_event_date_wct($schedule_html, $event_url, $time) {
+	$dom_lower = get_event_dom_block_lower_wct($schedule_html, $event_url);
+	$date_string = $dom_lower->find("td")[0]->plaintext;
+	return mktime(0,0,0,get_month_wct($date_string, $time), get_day_wct($date_string, $time), get_year_wct($schedule_html->find("html body table tbody tr td table tbody tr td font.wctlight b")[0], $date_string));
 }
 
 //Parse out the month from a date string.  
@@ -42,33 +44,37 @@ function get_month_wct($date, $time) {
 }
 
 function get_day_wct($date, $time){
-	$date = substr($date, 0, stripos($date, ","));
 	$dash_position = stripos($date, '-');
 	$day = -1;
 	$date_string = "";
 	if ($time == 'start'){
-		$date_string = substr($date, 0, $dash_position);
+		$date_string = substr($date, 0, $dash_position);		
 	}
 	else {		
-		$date_string = substr($date, $dash_position);
+		$date_string = substr($date, $dash_position + 1);
 	}
 	$day = intval(preg_replace("/[^0-9]/","",$date_string));
-	if ($day == -1) {
+	if ($day < 0) {
 		echo "\nDay was -1";
 	}
 	return $day;
 }
 
-function get_year_wct($date){
-	$comma_position = stripos($date, ',');
+function get_year_wct($year_string, $date_string){
+	$dash_position = stripos($year_string, '-');
 	$year = -1;
-	$year_string = substr($date, $comma_position);
+	$year_string = substr($year_string, 0, $dash_position);
 	$year = intval(preg_replace("/[^0-9]/","",$year_string));
 	
-	if ($year == -1){
+	if ($year < 0){
 		echo "Year equals -1";
 	}
-	return $year;
+	if(get_month_wct($date_string, "start") <= 6){		
+		return $year + 1;
+	}
+	else {
+		return $year;
+	}
 }
 
 function get_purse_wct($purse_string) {
@@ -80,120 +86,61 @@ function get_purse_wct($purse_string) {
 	return $purse;
 }
 
-function get_gender_wct($html) {
-	$male = 0;
-	$female = 0;
-	if (stripos($html, "tom") !== false) $male += 1;
-	if (stripos($html, "brad") !== false) $male += 1;
-	if (stripos($html, "kevin") !== false) $male += 1;
-	if (stripos($html, "joe") !== false) $male += 1;
-	if (stripos($html, "john") !== false) $male += 1;
-	if (stripos($html, "thom") !== false) $male += 1;
-	if (stripos($html, "matt") !== false) $male += 1;
-	if (stripos($html, "brock") !== false) $male += 1;
-	if (stripos($html, "charley") !== false) $male += 1;
-	if (stripos($html, "randy") !== false) $male += 1;
-	if (stripos($html, "dave") !== false) $male += 1;
-	if (stripos($html, "ritvars") !== false) $male += 1;
-	if (stripos($html, "Petr") !== false) $male += 1;
-	if (stripos($html, "sven") !== false) $male += 1;
-	if (stripos($html, "simon") !== false) $male += 1;
-	if (stripos($html, "mikel") !== false) $male += 1;
-	if (stripos($html, "victor") !== false) $male += 1;
-	if (stripos($html, "mark") !== false) $male += 1;
-	if (stripos($html, "brett") !== false) $male += 1;
-	if (stripos($html, "reid") !== false) $male += 1;
-	if (stripos($html, "colin") !== false) $male += 1;
-	if (stripos($html, "braeden") !== false) $male += 1;
-	if (stripos($html, "derek") !== false) $male += 1;
-	if (stripos($html, "tim") !== false) $male += 1;
-	if (stripos($html, "brent") !== false) $male += 1;
-	if (stripos($html, "ben") !== false) $male += 1;
-	if (stripos($html, "patrick") !== false) $male += 1;
-	if (stripos($html, "niklas") !== false) $male += 1;
-	if (stripos($html, "nic") !== false) $male += 1;
-	if (stripos($html, "mike") !== false) $male += 1;
-	if (stripos($html, "nic") !== false) $male += 1;
-	if (stripos($html, "denni") !== false) $male += 1;
-	if (stripos($html, "benoit") !== false) $male += 1;
-	if (stripos($html, "peter") !== false) $male += 1;
-	if (stripos($html, "scott") !== false) $male += 1;
-	if (stripos($html, "david") !== false) $male += 1;
-	if (stripos($html, "michael") !== false) $male += 1;
-	if (stripos($html, "steve") !== false) $male += 1;
-	if (stripos($html, "kirk") !== false) $male += 1;
-	if (stripos($html, "glenn") !== false) $male += 1;
-	if (stripos($html, "wayne") !== false) $male += 1;
-	if (stripos($html, "richard") !== false) $male += 1;
-	if (stripos($html, "ryan") !== false) $male += 1;
-	if (stripos($html, "adam") !== false) $male += 1;
-	if (stripos($html, "rob") !== false) $male += 1;
-	if (stripos($html, "todd") !== false) $male += 1;
-	if (stripos($html, "brandon") !== false) $male += 1;
-	if (stripos($html, "alex") !== false) $male += 1;
-	if (stripos($html, "dave") !== false) $male += 1;
-	if (stripos($html, "chris") !== false) $male += 1;
-	if (stripos($html, "guy") !== false) $male += 1;
-	if (stripos($html, "simon") !== false) $male += 1;
-	if (stripos($html, "martin") !== false) $male += 1;
-	if (stripos($html, "doug") !== false) $male += 1;
-	if (stripos($html, "jason") !== false) $male += 1;
-	if (stripos($html, "terry") !== false) $male += 1;
-	if (stripos($html, "rui") !== false) $male += 1;
-	if (stripos($html, "codey") !== false) $male += 1;
-	if (stripos($html, "wesley") !== false) $male += 1;
-	if (stripos($html, "jake") !== false) $male += 1;
-	if (stripos($html, "josh") !== false) $male += 1;
-	if (stripos($html, "don") !== false) $male += 1;
-	if (stripos($html, "brian") !== false) $male += 1;
-	if (stripos($html, "eric") !== false) $male += 1;
-	if (stripos($html, "phil") !== false) $male += 1;
-	if (stripos($html, "max") !== false) $male += 1;
-	if (stripos($html, "will") !== false) $male += 1;
-	
-	if (stripos($html, "trish") !== false) $female += 1;
-	if (stripos($html, "anna") !== false) $female += 1;
-	if (stripos($html, "sara") !== false) $female += 1;
-	if (stripos($html, "jen") !== false) $female += 1;
-	if (stripos($html, "taylor") !== false) $female += 1;
-	if (stripos($html, "chelsea") !== false) $female += 1;
-	if (stripos($html, "kelsey") !== false) $female += 1;
-	if (stripos($html, "laura") !== false) $female += 1;
-	if (stripos($html, "amy") !== false) $female += 1;
-	if (stripos($html, "courtney") !== false) $female += 1;
-	if (stripos($html, "alison") !== false) $female += 1;
-	if (stripos($html, "allison") !== false) $female += 1;
-	if (stripos($html, "kreviazuk") !== false) $female += 1;
-	if (stripos($html, "monica") !== false) $female += 1;
-	if (stripos($html, "vicky") !== false) $female += 1;
-	if (stripos($html, "val") !== false) $female += 1;
-	if (stripos($html, "kait") !== false) $female += 1;
-	if (stripos($html, "rachel") !== false) $female += 1;
-	if (stripos($html, "dana") !== false) $female += 1;
-	if (stripos($html, "emma") !== false) $female += 1;
-	if (stripos($html, "jamie") !== false) $female += 1;
-	if (stripos($html, "tracy") !== false) $female += 1;
-	if (stripos($html, "amanda") !== false) $female += 1;
-	if (stripos($html, "jenna") !== false) $female += 1;
-	$female +=  substr_count($html, 'la<');
-	$female +=  substr_count($html, 'ca<');
-	$female +=  substr_count($html, 'ra<');
-	$female +=  substr_count($html, 'na<');
-	$female +=  substr_count($html, 'y<');
-
-
-	echo "female" . $female;
-	echo "\n" . $male;
-	if ($male > $female) {
-		return MEN;
-	}
-	else {
+function get_gender_wct($schedule_html) {
+	if (stripos($schedule_html, 'bgcolor="#F2DDDA"') !== false) {
 		return WOMEN;
 	}
+	else if (stripos($schedule_html, 'bgcolor="#CEDFE9"') !== false) {
+		return MEN;
+	}
+	return -1;
 }
 
-function get_currency_wct($html) {
-	return substr($html, -3);
+function get_event_dom_block_upper_wct($schedule_html, $event_url) {
+	return $schedule_html->find("a[href=" . $event_url . "]")[0]->parent()->parent()->parent()->parent();
+}
+
+function get_event_dom_block_lower_wct($schedule_html, $event_url) {
+	return $schedule_html->find("a[href=" . $event_url . "]")[0]->parent()->parent()->parent()->parent()->next_sibling();
+}
+
+function get_event_name_wct($schedule_html, $event_url) {
+	return $schedule_html->find("a[href=" . $event_url . "]")[0]->plaintext;
+}
+
+function get_event_location_wct($schedule_html, $event_url) {
+	$dom_block = get_event_dom_block_upper_wct($schedule_html, $event_url);
+	$location_string = $dom_block->find("td[align=right]")[0]->plaintext;
+	
+	$comma_position = 	stripos($location_string, ',');
+	$city = substr($location_string, 0, $comma_position);
+	$province = substr($location_string, $comma_position + 1);
+	
+	if (strlen($city) <= 2) {
+		echo "\nCity string length less than 2";
+	}
+	if (strlen($province) <=2) {
+		echo "\nProvince string length less than 2";
+	}
+	return new Location($city, $province);
+}
+
+function get_event_purse_wct($schedule_html, $event_url) {
+	$dom_lower = get_event_dom_block_lower_wct($schedule_html, $event_url);
+	$purse_string = $dom_lower->find("td")[1]->plaintext;
+	
+	$purse = -1;
+	$purse = intval(preg_replace("/[^0-9]/","",$purse_string));
+	if ($purse == -1) {
+		echo "Purse is $-1";
+	}
+	return $purse;
+}
+
+function get_event_currency_wct($schedule_html, $event_url) {
+	$dom_lower = get_event_dom_block_lower_wct($schedule_html, $event_url);
+	$purse_string = $dom_lower->find("td")[1]->plaintext;
+	return substr($purse_string, -4, 3);
 }
 
 ?>

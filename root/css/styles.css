@@ -85,7 +85,7 @@ Landing Page
 
 #search-button {
     position: absolute;
-    top: 6%;
+    top: 3%;
     left: 403px;
     background-image: url(/images/search-icon-thin.png);
     width: 44px;
@@ -175,6 +175,27 @@ Landing Page
 		left: 5%;
 	}
 	
+}
+
+/****************
+Autocomplete
+****************/
+.auto-complete {
+	border-top: 1px solid #ddd;
+	list-style:none;
+}
+
+.auto-complete li {
+	height: 35px;
+	line-height:35px;
+	padding-left:10px;
+	font-size:16px;
+	font-family: "Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;
+}
+
+.auto-complete li:hover {
+	background: #ddd;
+	cursor:pointer;
 }
 
 

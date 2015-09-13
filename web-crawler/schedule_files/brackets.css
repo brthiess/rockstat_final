@@ -1,0 +1,16 @@
+
+.brackets table {
+  border-collapse: collapse;
+  border: none;
+  font: small arial, helvetica, sans-serif;
+}
+.brackets td {
+  vertical-align: bottom;
+  width: 1px;
+  margin: 0;
+  padding: 0;
+}
+.brackets td p {
+  margin: 0;
+  padding: 1px 1px 1px 1px;
+}
