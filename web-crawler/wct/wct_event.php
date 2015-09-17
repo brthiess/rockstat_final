@@ -140,7 +140,9 @@ function get_event_purse_wct($schedule_html, $event_url) {
 function get_event_currency_wct($schedule_html, $event_url) {
 	$dom_lower = get_event_dom_block_lower_wct($schedule_html, $event_url);
 	$purse_string = $dom_lower->find("td")[1]->plaintext;
-	return substr($purse_string, -4, 3);
+	$open_bracket_position = stripos($purse_string, "(");
+	$closed_bracket_position = stripos($purse_string, ")");
+	return substr($purse_string, $open_bracket_position + 1, $closed_bracket_position - $open_bracket_position - 1);
 }
 
 ?>

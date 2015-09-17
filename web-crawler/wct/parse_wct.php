@@ -12,9 +12,9 @@ include_once $directory . "wct_event.php";
 //Otherwise returns an array of game objects
 function get_event_games_wct($event_url){
 	$game_objects = array();
-	$scores_url = $event_url . '&view=Scores';
+	$scores_url = $event_url . '&view=Scores&showdrawid=1';
 	$scores_html = get_html($scores_url);	
-	$number_of_draws = count($scores_html->find(".linescoredrawlink")) + 1;
+	$number_of_draws = get_number_of_draws_wct($scores_html->find(".linescoredrawlink"));
 	for($draw_id = 1; $draw_id <= $number_of_draws; $draw_id++) {
 		$draw_url = $event_url . '&view=Scores&showdrawid=' . $draw_id;
 		$html = get_html($draw_url);
@@ -54,7 +54,7 @@ function parse_wct_event_page($html) {
 	//First check to make sure we are on a page that has scores on it.  If not, return null
 	if (!wct_page_has_scores_on_it($html)) {
 		echo "\nERROR: Page has no scores";
-		return null;
+		return array();
 	}
 	$game_objects = array();	
 	
@@ -110,27 +110,18 @@ function parse_wct_event_page($html) {
 			$player_count++;
 		}
 		$handle = fopen ("php://stdin","r");
-		$line = fgets($handle);
-		//Debugging info
-		echo "\xA\xATime: ";
-		echo $draw_time;
-		echo "***Team 1***\xA";
-		$team1->print_team();
-		echo "\xA***Team 2***\xA";
-		$team2->print_team();
-		
+		$line = fgets($handle);		
+					
 		//Assign hammer
 		$hammer = get_hammer_wct($game);
-		
+			
 		//Get the linescore
 		$linescore = get_linescore_wct($game);
 		
-		//Debug
-		$linescore->print_linescore($hammer);
-		
-		
+		$new_game = new Game($team1, $team2, $linescore, $hammer, $draw_time);
+		$new_game->print_game();
 		//Push a new game onto the game_objects array
-		array_push($game_objects, new Game($team1, $team2, $linescore, $hammer, $draw_time));
+		array_push($game_objects, $new_game);
 	}
 	return $game_objects;
 }
@@ -277,11 +268,27 @@ function get_draw_time_wct($html) {
 	$dash_position = stripos($date_string, "--");
 	$comma_position = stripos($date_string, ",");
 	$day = trim(substr($date_string, $comma_position + 5, 3));
+	
 	$time = trim(substr($date_string, $dash_position + 2, 7));
+	
 	$year_string = $html->find(".wctlight")[3]->plaintext;
 	$comma_position = stripos($year_string, ",");
 	$year = trim(substr($year_string, $comma_position + 1, 5));
-	echo $year;
+	
+	return date_create($year . "-" . $month . "-" . $day . 	" " . $time);
+}
+
+function get_number_of_draws_wct($draw_numbers) {
+	$max = 0;
+	foreach($draw_numbers as $draw_number) {
+		$draw_number = $draw_number->href;
+		$draw_id_position = stripos($draw_number, "showdrawid=") + 11;
+		$draw_number = intval(substr($draw_number, $draw_id_position));
+		if ($draw_number > $max) {
+			$max = $draw_number;
+		}
+	}
+	return $max;
 }
 
 ?>

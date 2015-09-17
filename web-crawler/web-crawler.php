@@ -2,6 +2,7 @@
 include_once "simple_html_dom.php";
 include_once "constants.php";
 include_once "wct/parse_wct.php";
+include_once "db/input.php";
 
 // Create DOM from URL or file
 $schedule_url = 'schedule.html';
@@ -39,8 +40,22 @@ function parse_event_html($schedule_html, $event_url){
 
 //Returns the next event URL to visit
 function get_next_event_url($schedule_html, $previous_event_url) {
-	if ($previous_event_url == null){
-		return "http://www.worldcurl.com/events.php?task=Event&eventid=3805";
+	$urls = $schedule_html->find("a");
+	
+	$found_previous_url = false;
+	foreach($urls as $url){
+		//Look for previous url
+		if ($previous_event_url != null && $url->href == $previous_event_url) {
+			$found_previous_url = true;
+			continue;
+		}
+		//If we have found previous url, then look for next event url
+		if ($found_previous_url == true && stripos($url->href, "events.php?task=Event&eventid=") !== false) {
+			return $url->href;
+		}
+		if ($previous_event_url == null && stripos($url->href, "events.php?task=Event&eventid=") !== false) {
+			return $url->href;
+		}
 	}
 	return null;
 }
