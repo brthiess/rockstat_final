@@ -56,38 +56,68 @@ function parse_wct_event_page($html) {
 		echo "\nERROR: Page has no scores";
 		return null;
 	}
-	
 	$game_objects = array();	
 	
+	$draw_time = get_draw_time_wct($html);
 	
 	//Get each game
 	$games = $html->find(".linescorebox");
 	foreach($games as $game){	
-		
 		//Get both teams
 		$teams = array();
-		$players_html = $game->next_sibling()->find("tbody tr td table tbody tr td");
+
+		$players_html = $game->next_sibling();
+		while($players_html->tag != 'table') {
+			$players_html = $players_html->next_sibling();
+			//echo "\nTag: " . $players_html->tag;
+		}
+		$players_html = $players_html->find("tr td table td table");
+		/*
+		echo count($players_html);
+		echo '*****\n';
+		echo $players_html[0];
+		echo '******************************************************';
+		echo $players_html[1];
+		echo '******************************************************';
+		echo $players_html[2];
+		*/
 		$player_count = 0;
 		$team1 = new Team();
 		$team2 = new Team();
-		foreach($players_html as $player){
-
+		foreach($players_html as $player){		
 			//Get each player
-			$position = $player->find("tr")[0]->plaintext;
+			$position = trim(str_replace(":", "", $player->find("tr")[0]->plaintext));
 			$image = $player->find("tr")[1]->plaintext;
-			$name = $player->find("tr")[2]->plaintext;	
+			$name = $player->find("tr")[2]->innertext;
+			
+			//Parse the name of the player
+			$bold_position = strpos($name, "<b>");	
+			$br_position = strpos($name, "<br>");
+			$bold_end_position = strpos($name, "</b>");
+			
+			$first_name = substr($name, $bold_position + 3, $br_position - $bold_position - 3);
+			$last_name = substr($name, $br_position + 4, $bold_end_position - $br_position - 4);
 			
 			if ($player_count < 4) {
-				$team1->add_player(new Player($name, $name, $position));
+				$team1->add_player(new Player($first_name, $last_name, $position));
 			}
 			else if ($player_count < 8) {
-				$team2->add_player(new Player($name, $name, $position));
+				$team2->add_player(new Player($first_name, $last_name, $position));
 			}
 			else {
 				echo "ERROR: More than 8 players";
 			}
+			$player_count++;
 		}
-
+		$handle = fopen ("php://stdin","r");
+		$line = fgets($handle);
+		//Debugging info
+		echo "\xA\xATime: ";
+		echo $draw_time;
+		echo "***Team 1***\xA";
+		$team1->print_team();
+		echo "\xA***Team 2***\xA";
+		$team2->print_team();
 		
 		//Assign hammer
 		$hammer = get_hammer_wct($game);
@@ -95,8 +125,12 @@ function parse_wct_event_page($html) {
 		//Get the linescore
 		$linescore = get_linescore_wct($game);
 		
+		//Debug
+		$linescore->print_linescore($hammer);
+		
+		
 		//Push a new game onto the game_objects array
-		array_push($game_objects, new Game($team1, $team2, $linescore, $hammer));
+		array_push($game_objects, new Game($team1, $team2, $linescore, $hammer, $draw_time));
 	}
 	return $game_objects;
 }
@@ -174,10 +208,10 @@ function get_hammer_wct($game) {
 	$hammer = $game->find(".linescorehammer");
 	//Check if the upper linescore team has hammer
 	if (strpos($hammer[0]->plaintext, 'hammer.gif') !== false) {
-		return 0;
+		return 1;
 	}
 	else {
-		return 1;
+		return 2;
 	}	
 }
 
@@ -225,5 +259,29 @@ function get_event_wct($html) {
 	return new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender);
 }
 
+function get_draw_time_wct($html) {
+	$date_string = $html->find(".linescoredrawhead")[1];
+	if (stripos($date_string, "jan") !== false) $month = 1;
+	if (stripos($date_string, "feb") !== false) $month = 2;
+	if (stripos($date_string, "mar") !== false) $month = 3;
+	if (stripos($date_string, "apr") !== false) $month = 4;
+	if (stripos($date_string, "may") !== false) $month = 5;
+	if (stripos($date_string, "jun") !== false) $month = 6;
+	if (stripos($date_string, "jul") !== false) $month = 7;
+	if (stripos($date_string, "aug") !== false) $month = 8;
+	if (stripos($date_string, "sep") !== false) $month = 9;
+	if (stripos($date_string, "oct") !== false) $month = 10;
+	if (stripos($date_string, "nov") !== false) $month = 11;
+	if (stripos($date_string, "dec") !== false) $month = 12;
+	
+	$dash_position = stripos($date_string, "--");
+	$comma_position = stripos($date_string, ",");
+	$day = trim(substr($date_string, $comma_position + 5, 3));
+	$time = trim(substr($date_string, $dash_position + 2, 7));
+	$year_string = $html->find(".wctlight")[3]->plaintext;
+	$comma_position = stripos($year_string, ",");
+	$year = trim(substr($year_string, $comma_position + 1, 5));
+	echo $year;
+}
 
 ?>

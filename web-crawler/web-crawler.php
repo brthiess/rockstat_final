@@ -4,8 +4,6 @@ include_once "constants.php";
 include_once "wct/parse_wct.php";
 
 // Create DOM from URL or file
-$MAIN_URL = 'test.html';
-
 $schedule_url = 'schedule.html';
 $schedule_html = get_html($schedule_url);
 
