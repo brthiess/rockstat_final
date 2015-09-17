@@ -35,8 +35,8 @@ Landing Page
 /*Desktop*/
 
 .logo-container{
-    position: absolute;
-    left: 0px;
+    margin: auto auto;
+    width: 272px;
 }
 
 .logo-container img {
@@ -48,7 +48,7 @@ Landing Page
 	position:relative;
 	min-width: 100%;
 	height: 100%;
-	background-color:#666;
+	background-color:#f7f7f7;
 	background-repeat:no-repeat;
 	margin-bottom: -40px;
 	z-index: 0;
@@ -61,20 +61,21 @@ Landing Page
 
 #search-container {
     position: absolute;
-    left: 7%;
-    top: 20%;
+    top: 40%;
+    width: 100%;
+    height: 50px;
 }
 
 #search-input-container {
-    position: absolute;
-    left: 288px;
-    width: 450px;
+    position: relative;
+    width: 550px;
+    margin: auto auto;
     background-color: white;
-    display: inline-block;
+    border: solid 1px #ddd;
 }
 
 #search-input{
-    width: 383px;
+    width: 490px;
     height: 40px;
     outline: none;
     border: none;
@@ -86,12 +87,13 @@ Landing Page
 #search-button {
     position: absolute;
     top: 3%;
-    left: 403px;
+    left: 504px;
     background-image: url(/images/search-icon-thin.png);
     width: 44px;
     height: 44px;
     cursor: pointer;
     background-size: contain;
+
 }
 
 #search-button:hover {
