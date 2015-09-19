@@ -21,6 +21,9 @@ a:hover {
 .gray-text {
 	color: beige;
 }
+.invisible {
+	display:none;
+}
 
 /************************
 Landing Page
@@ -37,6 +40,7 @@ Landing Page
 .logo-container{
     margin: auto auto;
     width: 272px;
+	margin-bottom:30px;
 }
 
 .logo-container img {
@@ -63,37 +67,35 @@ Landing Page
     position: absolute;
     top: 40%;
     width: 100%;
-    height: 50px;
 }
 
 #search-input-container {
     position: relative;
     width: 550px;
-    margin: auto auto;
-    background-color: white;
-    border: solid 1px #ddd;
+    margin: auto auto;	
 }
 
 #search-input{
-    width: 490px;
+    width: 100%;
     height: 40px;
     outline: none;
     border: none;
     padding: 5px 10px;
     font-size: 18px;
     font-family: "Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;
+	z-index:99;
+	border: 1px solid #ccc;
 }
 
 #search-button {
     position: absolute;
-    top: 3%;
-    left: 504px;
+    top: 7%;
+    right: -3%;
     background-image: url(/images/search-icon-thin.png);
     width: 44px;
     height: 44px;
     cursor: pointer;
     background-size: contain;
-
 }
 
 #search-button:hover {
@@ -104,15 +106,14 @@ Landing Page
 .footer {
 	position: relative;
 	height: 40px;
-	background-image: linear-gradient(rgba(0,0,0,.55) 0%,rgba(0,0,0,.55) 100%);
-	color: white;
-	font-size:15px;
+	color: #666;
+	font-size:14px;
 	line-height:30px;
 }
 
 .footer-about {
 	position: absolute;
-	right: 48%;
+	left: 5%;
 	top:16%;
 }
 
@@ -122,10 +123,10 @@ Landing Page
 	top:16%;
 }
 
-.footer-factoid {
-	position: absolute;
-	left: 2%;
-	top:16%;
+#slogan {
+	text-align: center;
+	color:#666;
+	margin-top:12px;
 }
 
 /*Mobile*/
@@ -141,19 +142,19 @@ Landing Page
 	
 	.logo-container {
 	    top: -100px;
-		right: -25%
+		right: -25%;
+		margin-bottom:45px;
 	}
 	
 	#search-button {
-		left: 86%;
-		top: 3%;
+		right:2%;
 		background-image: url(/images/search-icon-no-background.png);
 		width: 35px;
 		height: 35px;
 	}
 	
 	#search-input {
-		width: 82%;
+		width: 81%;
 		height: 30px;
 		padding-right: 15%;
 	}
@@ -169,9 +170,8 @@ Landing Page
 	    background-size: auto 100%;
 		background-position: 30%;
 	}
-
-	.footer-factoid {
-		display:none;
+	.footer {
+		font-size:20px;
 	}
 	.footer-about {
 		left: 5%;
@@ -179,26 +179,29 @@ Landing Page
 	
 }
 
-/****************
-Autocomplete
-****************/
-.auto-complete {
-	border-top: 1px solid #ddd;
-	list-style:none;
-}
-
-.auto-complete li {
-	height: 35px;
-	line-height:35px;
-	padding-left:10px;
+.autocomplete-suggestions {
+    /* core styles should not be changed */
+    position: absolute; display: none; z-index: 2; max-height: 254px; overflow: hidden; 
 	font-size:16px;
-	font-family: "Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;
+	background:white;
+	border-bottom:1px solid #ccc;
+}
+.autocomplete-suggestion { 
+	position: relative; 
+	padding: 0 .6em; 
+	line-height: 40px; 
+	white-space: nowrap; 
+	overflow: hidden;  
+	color: #333;
+	border: 1px solid #ccc;
+	border-top:none;
+	border-bottom: none;}
+.autocomplete-suggestion b { font-weight: bold; color: #333; }
+.autocomplete-suggestion.selected { background: #ddd; }
+.autocomplete-suggestion:hover {
+	cursor: pointer;
 }
 
-.auto-complete li:hover {
-	background: #ddd;
-	cursor:pointer;
-}
 
 
 
