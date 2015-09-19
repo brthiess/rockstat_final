@@ -28,7 +28,7 @@ function parse_event_html($schedule_html, $event_url){
 	$page_type = get_page_type($schedule_html);
 	if ($page_type == WORLD_CURL){
 		$event = get_basic_event_information_wct($schedule_html, $event_url);
-		$event->games = get_event_games_wct($event_url);
+		$event->games = get_event_games_wct($event_url, $event);
 		return $event;
 	}
 	else if ($page_type == CCA){

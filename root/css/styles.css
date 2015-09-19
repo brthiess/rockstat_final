@@ -179,6 +179,10 @@ Landing Page
 	
 }
 
+/************************************************************
+Autocomplete
+************************************************************/
+
 .autocomplete-suggestions {
     /* core styles should not be changed */
     position: absolute; display: none; z-index: 2; max-height: 254px; overflow: hidden; 

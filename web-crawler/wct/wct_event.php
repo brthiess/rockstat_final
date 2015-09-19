@@ -145,4 +145,25 @@ function get_event_currency_wct($schedule_html, $event_url) {
 	return substr($purse_string, $open_bracket_position + 1, $closed_bracket_position - $open_bracket_position - 1);
 }
 
+function get_event_teams_wct($event_url) {
+	$teams_url = $event_url . "&view=Teams";
+	$teams_html = get_html($teams_url);
+	$team_names = $teams_html->find(".wctlight_team_text");
+	$player_names = $teams_html->find(".wctlight_player_text");
+
+	$team_objects = array();
+	for ($i = 0; $i < count($team_names); $i++){
+		$team = new Team();
+		
+
+		for ($k = 4; $k >= 1; $k--) {
+			$first_name = explode("<br>", $player_names[$i * 4 + 4 - $k]->innertext)[0];
+			$last_name = explode("<br>", $player_names[$i * 4 + 4 - $k]->innertext)[1];
+			$team->add_player(new Player($first_name, $last_name, number_to_position($k)));
+		}
+		array_push($team_objects, $team);
+	}
+	return $team_objects;
+}
+
 ?>

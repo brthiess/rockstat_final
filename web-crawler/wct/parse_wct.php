@@ -10,7 +10,7 @@ include_once $directory . "wct_event.php";
 //and returns an array of game objects
 //Returns null if nothing to parse
 //Otherwise returns an array of game objects
-function get_event_games_wct($event_url){
+function get_event_games_wct($event_url, $event){
 	$game_objects = array();
 	$scores_url = $event_url . '&view=Scores&showdrawid=1';
 	$scores_html = get_html($scores_url);	
@@ -41,11 +41,12 @@ function get_basic_event_information_wct($schedule_html, $event_url) {
 	$start_date = get_event_date_wct($schedule_html, $event_url, "start");
 	$end_date = get_event_date_wct($schedule_html, $event_url, "end");
 	$event_purse = get_event_purse_wct($schedule_html, $event_url);
-	$event_currency = get_event_currency_wct($schedule_html, $event_url);	
+	$event_currency = get_event_currency_wct($schedule_html, $event_url);
+	$event_teams = get_event_teams_wct($event_url);
 	
-	$event = new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender);
+	$event = new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender, $event_teams);
 	$event->print_event();
-	return new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender);
+	return $event;
 }
 
 //Is given a page with scores on it

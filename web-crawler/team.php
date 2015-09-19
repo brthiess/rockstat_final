@@ -21,12 +21,12 @@
 		
 		public function print_team() {
 			foreach($this->players as $player) {
+				echo "\xA";
 				echo $player->position;
 				echo ': ';
 				echo $player->first_name;
 				echo ' ';
-				echo $player->last_name;
-				echo "\xA";
+				echo $player->last_name;				
 			}
 		}
 
