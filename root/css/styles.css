@@ -88,6 +88,7 @@ Landing Page
 }
 
 #search-button {
+	text-indent:99em;
     position: absolute;
     top: 7%;
     right: -3%;
@@ -96,6 +97,8 @@ Landing Page
     height: 44px;
     cursor: pointer;
     background-size: contain;
+	background-color:white;
+	border:none;
 }
 
 #search-button:hover {

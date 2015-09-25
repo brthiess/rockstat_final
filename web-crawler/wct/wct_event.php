@@ -87,10 +87,10 @@ function get_purse_wct($purse_string) {
 }
 
 function get_gender_wct($schedule_html) {
-	if (stripos($schedule_html, 'bgcolor="#F2DDDA"') !== false) {
+	if (stripos($schedule_html, 'bgcolor=#F2DDDA') !== false) {
 		return WOMEN;
 	}
-	else if (stripos($schedule_html, 'bgcolor="#CEDFE9"') !== false) {
+	else if (stripos($schedule_html, 'bgcolor=#CEDFE9') !== false) {
 		return MEN;
 	}
 	return -1;
@@ -164,6 +164,34 @@ function get_event_teams_wct($event_url) {
 		array_push($team_objects, $team);
 	}
 	return $team_objects;
+}
+
+//Is given the event url and returns an array of the winnings each team received
+function get_event_winnings_wct($event_url) {
+	$event_page_html = get_html($event_url . "&view=Money");
+	$prize_purse = $event_page_html->find(".wctlight");
+	$money_list;
+	for ($i = 0; $i < count($prize_purse); $i++) {
+		if (stripos($prize_purse[$i], "prize purse") !== false) {
+			echo $prize_purse[$i];
+			$money_list = $prize_purse[$i]->parent()->parent()->parent()->next_sibling();
+			break;
+		}
+	}
+	$rows = $money_list->find("tr td table tr");
+	for($i = 1; $i < count($rows); $i++) {
+		//TO DO:
+	}
+}
+
+function get_event_category_wct($schedule_html, $event_url) {
+	$event_row = get_event_dom_block_upper_wct($schedule_html, $event_url);
+	if (stripos($event_row, "grandslam") !== false) {
+		RETURN GRAND_SLAM;
+	}
+	else {
+		RETURN WCT;
+	}
 }
 
 ?>

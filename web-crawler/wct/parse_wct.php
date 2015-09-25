@@ -36,6 +36,7 @@ function get_basic_event_information_wct($schedule_html, $event_url) {
 	if ($event_gender == -1) {
 		echo "\nNo Gender Found.  Error";
 	}
+	$event_category = get_event_category_wct($schedule_html, $event_url);
 	$event_name = get_event_name_wct($schedule_html, $event_url);
 	$event_location = get_event_location_wct($schedule_html, $event_url);
 	$start_date = get_event_date_wct($schedule_html, $event_url, "start");
@@ -43,8 +44,9 @@ function get_basic_event_information_wct($schedule_html, $event_url) {
 	$event_purse = get_event_purse_wct($schedule_html, $event_url);
 	$event_currency = get_event_currency_wct($schedule_html, $event_url);
 	$event_teams = get_event_teams_wct($event_url);
+	$event_winnings = get_event_winnings_wct($event_url);
 	
-	$event = new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender, $event_teams);
+	$event = new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender, $event_teams, $event_category);
 	$event->print_event();
 	return $event;
 }
@@ -291,5 +293,8 @@ function get_number_of_draws_wct($draw_numbers) {
 	}
 	return $max;
 }
+
+
+
 
 ?>

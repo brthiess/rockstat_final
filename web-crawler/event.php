@@ -10,8 +10,9 @@
 		public $gender;
 		public $games;
 		public $teams;
+		public $category;
 		
-		public function __construct($location, $start_date, $end_date, $purse, $currency, $name, $gender, $teams){
+		public function __construct($location, $start_date, $end_date, $purse, $currency, $name, $gender, $teams, $category){
 			$this->location = $location;
 			$this->start_date = $start_date;
 			$this->end_date = $end_date;
@@ -21,12 +22,14 @@
 			$this->gender = $gender;
 			$this->games = array();
 			$this->teams = $teams;
+			$this->category = $category;
 		}
 		
 		public function print_event() {
 			echo "\n\n***Event***";
 			echo "\nName: " . $this->name . "\n";
 			echo "Location: " . $this->location->city . $this->location->province . "\n";
+			echo "Type: " . $this->category . "\n";
 			echo "Start Date: " . date('M-d-Y', $this->start_date) . "\n";
 			echo "End Date: " . date('M-d-Y', $this->end_date) . "\n";
 			echo "Purse: " . $this->purse . " " . $this->currency . "\n";			

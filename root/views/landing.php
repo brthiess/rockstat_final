@@ -5,8 +5,10 @@
 			<img src="/images/logo2-gray4.png"/>
 		</div>
 		<div id="search-input-container">
-			<input id="search-input" placeholder="Search curling stats..."></input>
-			<div id="search-button"></div>
+			<form>
+				<input id="search-input" placeholder="Search curling stats..."></input>
+				<input type="submit" id="search-button"></input>
+			</form>
 		</div>
 		<div id="slogan">
 			The world's largest database of curling statistics

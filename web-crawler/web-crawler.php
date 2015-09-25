@@ -5,10 +5,11 @@ include_once "wct/parse_wct.php";
 include_once "db/input.php";
 
 // Create DOM from URL or file
-$schedule_url = 'schedule.html';
+$schedule_url = 'http://www.worldcurl.com/schedule.php?eventtypeid=21';
 $schedule_html = get_html($schedule_url);
 
 $next_event_url = get_next_event_url($schedule_html, null);	
+
 while($next_event_url != null){
 	$parsed_event_html = parse_event_html($schedule_html, $next_event_url);
 	if ($parsed_event_html != null)
@@ -18,7 +19,8 @@ while($next_event_url != null){
 
 //Gets the html dom object from the given url
 function get_html($url){
-	return file_get_html($url);
+	$html = file_get_html($url);
+	return replace_links_with_base_url(get_base_url($url), $html);
 }
 
 //Is given the url for an event page, and returns 
@@ -40,6 +42,7 @@ function parse_event_html($schedule_html, $event_url){
 
 //Returns the next event URL to visit
 function get_next_event_url($schedule_html, $previous_event_url) {
+	return 'http://www.worldcurl.com/events.php?task=Event&eventid=3826';
 	$urls = $schedule_html->find("a");
 	
 	$found_previous_url = false;
@@ -64,6 +67,25 @@ function get_next_event_url($schedule_html, $previous_event_url) {
 //Returns the page type:  CCA or WorldCurl for now
 function get_page_type($html){
 	return WORLD_CURL;
+}
+
+
+//Adds the base url to all links in the html if necessary
+function replace_links_with_base_url($base_url, $html) {
+	$links = $html->find("a");
+	for ($i = 0; $i < count($links); $i++){
+		if (!(stripos($links[$i]->href, $base_url) !== false)) {  //If the link does not contain the base url.  Add it.
+			$links[$i]->href =  $base_url . $links[$i]->href;
+		}		
+	}
+	return $html;
+}
+
+
+//Gets the base url from the given url
+function get_base_url($url) {
+	$position = strposOffset("/", $url, 3);
+	return substr($url, 0, $position + 1);	
 }
 
 ?>
