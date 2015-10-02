@@ -1,5 +1,7 @@
 <?php
 
+include_once $directory . "parse_money_list_wct.php";
+
 function get_event_date_wct($schedule_html, $event_url, $time) {
 	$dom_lower = get_event_dom_block_lower_wct($schedule_html, $event_url);
 	$date_string = $dom_lower->find("td")[0]->plaintext;
@@ -179,9 +181,17 @@ function get_event_winnings_wct($event_url) {
 		}
 	}
 	$rows = $money_list->find("tr td table tr");
+	$event_winnings_objects = array();
 	for($i = 1; $i < count($rows); $i++) {
-		//TO DO:
+		$info = $rows[$i]->find("td");
+		$rank = get_rank_wct($info[0]->plaintext);
+		$team = get_team_wct($info[1]->plaintext);
+		$money = get_money_winnings_wct($info[2]);
+		$points = get_points_wct($info[3]);
+		array_push($event_winnings_objects, new Event_Team_Points($team, $money, $points, $rank));
 	}
+	return $event_winnings_objects;
+
 }
 
 function get_event_category_wct($schedule_html, $event_url) {

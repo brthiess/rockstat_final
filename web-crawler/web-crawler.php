@@ -42,7 +42,7 @@ function parse_event_html($schedule_html, $event_url){
 
 //Returns the next event URL to visit
 function get_next_event_url($schedule_html, $previous_event_url) {
-	return 'http://www.worldcurl.com/events.php?task=Event&eventid=3826';
+	return "http://www.worldcurl.com/events.php?task=Event&eventid=3826";
 	$urls = $schedule_html->find("a");
 	
 	$found_previous_url = false;

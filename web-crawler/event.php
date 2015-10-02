@@ -10,9 +10,10 @@
 		public $gender;
 		public $games;
 		public $teams;
-		public $category;
+		public $category;		//WCT or Slam or CCA etc.
+		public $ranking_list;
 		
-		public function __construct($location, $start_date, $end_date, $purse, $currency, $name, $gender, $teams, $category){
+		public function __construct($location, $start_date, $end_date, $purse, $currency, $name, $gender, $teams, $category, $ranking_list){
 			$this->location = $location;
 			$this->start_date = $start_date;
 			$this->end_date = $end_date;
@@ -22,7 +23,8 @@
 			$this->gender = $gender;
 			$this->games = array();
 			$this->teams = $teams;
-			$this->category = $category;
+			$this->category = trim($category);
+			$this->ranking_list = $ranking_list;
 		}
 		
 		public function print_event() {
@@ -34,6 +36,7 @@
 			echo "End Date: " . date('M-d-Y', $this->end_date) . "\n";
 			echo "Purse: " . $this->purse . " " . $this->currency . "\n";			
 			echo "Gender: " . $this->gender . "\n";
+			echo print_winnings($this->ranking_list);
 			echo "\xA";
 			echo "Teams: ";
 			foreach($this->teams as $team) {

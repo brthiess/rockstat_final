@@ -5,6 +5,8 @@ include_once $directory . "../curling.php";
 include_once $directory . "../constants.php";
 include_once $directory . "../math.php";
 include_once $directory . "wct_event.php";
+include_once $directory . "wct_score.php";
+
 
 //Is given the html dom object for a world curl page 
 //and returns an array of game objects
@@ -19,8 +21,9 @@ function get_event_games_wct($event_url, $event){
 		$draw_url = $event_url . '&view=Scores&showdrawid=' . $draw_id;
 		$html = get_html($draw_url);
 		$page_type = get_page_type_wct($html);
-		if ($page_type == WCT_EVENT_PAGE) 
-			array_merge($game_objects, parse_wct_event_page($html));
+		if ($page_type == WCT_EVENT_PAGE) {
+			array_merge($game_objects, parse_wct_event_page($html, $event));
+		}
 		else {
 			if ($page_type == ERROR)
 				echo "\n*****ERROR: Can't Determine Page Type****";	
@@ -46,14 +49,14 @@ function get_basic_event_information_wct($schedule_html, $event_url) {
 	$event_teams = get_event_teams_wct($event_url);
 	$event_winnings = get_event_winnings_wct($event_url);
 	
-	$event = new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender, $event_teams, $event_category);
+	$event = new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender, $event_teams, $event_category, $event_winnings);
 	$event->print_event();
 	return $event;
 }
 
 //Is given a page with scores on it
 //And returns an array of games
-function parse_wct_event_page($html) {
+function parse_wct_event_page($html, $event) {
 	//First check to make sure we are on a page that has scores on it.  If not, return null
 	if (!wct_page_has_scores_on_it($html)) {
 		echo "\nERROR: Page has no scores";
@@ -64,65 +67,16 @@ function parse_wct_event_page($html) {
 	$draw_time = get_draw_time_wct($html);
 	
 	//Get each game
-	$games = $html->find(".linescorebox");
-	foreach($games as $game){	
-		//Get both teams
-		$teams = array();
-
-		$players_html = $game->next_sibling();
-		while($players_html->tag != 'table') {
-			$players_html = $players_html->next_sibling();
-			//echo "\nTag: " . $players_html->tag;
-		}
-		$players_html = $players_html->find("tr td table td table");
-		/*
-		echo count($players_html);
-		echo '*****\n';
-		echo $players_html[0];
-		echo '******************************************************';
-		echo $players_html[1];
-		echo '******************************************************';
-		echo $players_html[2];
-		*/
-		$player_count = 0;
-		$team1 = new Team();
-		$team2 = new Team();
-		foreach($players_html as $player){		
-			//Get each player
-			$position = trim(str_replace(":", "", $player->find("tr")[0]->plaintext));
-			$image = $player->find("tr")[1]->plaintext;
-			$name = $player->find("tr")[2]->innertext;
-			
-			//Parse the name of the player
-			$bold_position = strpos($name, "<b>");	
-			$br_position = strpos($name, "<br>");
-			$bold_end_position = strpos($name, "</b>");
-			
-			$first_name = substr($name, $bold_position + 3, $br_position - $bold_position - 3);
-			$last_name = substr($name, $br_position + 4, $bold_end_position - $br_position - 4);
-			
-			if ($player_count < 4) {
-				$team1->add_player(new Player($first_name, $last_name, $position));
-			}
-			else if ($player_count < 8) {
-				$team2->add_player(new Player($first_name, $last_name, $position));
-			}
-			else {
-				echo "ERROR: More than 8 players";
-			}
-			$player_count++;
-		}
-		$handle = fopen ("php://stdin","r");
-		$line = fgets($handle);		
-					
-		//Assign hammer
+	$games = $html->find(".linescorebox");	
+	foreach($games as $game){		
+		list($team1, $team2) = get_teams_wct($game, $event->category);	
 		$hammer = get_hammer_wct($game);
-			
-		//Get the linescore
 		$linescore = get_linescore_wct($game);
 		
 		$new_game = new Game($team1, $team2, $linescore, $hammer, $draw_time);
 		$new_game->print_game();
+		$handle = fopen ("php://stdin","r");
+		$line = fgets($handle);
 		//Push a new game onto the game_objects array
 		array_push($game_objects, $new_game);
 	}
