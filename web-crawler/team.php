@@ -3,6 +3,7 @@
 	class Team {
 		public $players;
 		public $gender;
+		public $team_id; //Used for DB
 		
 		public function __construct() {
 			$this->players = array();
@@ -17,6 +18,13 @@
 		
 		public function number_of_players() {
 			return count($this->players);
+		}
+		
+		//Returns the name of the position specified
+		public function get_position($position) {
+			foreach($this->players as $player) {
+				if ($player->position == $position) return $player->first_name . " " . $player->last_name;
+			}
 		}
 		
 		public function print_team() {

@@ -10,3 +10,17 @@ BEGIN
   WHERE player_team.player_id = player_id;
 END //
 DELIMITER ;
+
+
+
+DROP PROCEDURE IF EXISTS get_games;
+DELIMITER //
+CREATE PROCEDURE get_games(IN player_id INT)
+BEGIN
+  SELECT COUNT(*) 
+  FROM player_team
+  INNER JOIN game_team
+  ON player_team.team_id=game_team.team_id
+  WHERE player_team.player_id = player_id;
+END //
+DELIMITER ;

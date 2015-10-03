@@ -12,8 +12,10 @@
 		public $teams;
 		public $category;		//WCT or Slam or CCA etc.
 		public $ranking_list;
+		public $format;
+		public $event_id; //Used for DB
 		
-		public function __construct($location, $start_date, $end_date, $purse, $currency, $name, $gender, $teams, $category, $ranking_list){
+		public function __construct($location, $start_date, $end_date, $purse, $currency, $name, $gender, $teams, $category, $ranking_list, $format){
 			$this->location = $location;
 			$this->start_date = $start_date;
 			$this->end_date = $end_date;
@@ -25,6 +27,7 @@
 			$this->teams = $teams;
 			$this->category = trim($category);
 			$this->ranking_list = $ranking_list;
+			$this->format = $format;
 		}
 		
 		public function print_event() {
@@ -36,7 +39,8 @@
 			echo "End Date: " . date('M-d-Y', $this->end_date) . "\n";
 			echo "Purse: " . $this->purse . " " . $this->currency . "\n";			
 			echo "Gender: " . $this->gender . "\n";
-			echo print_winnings($this->ranking_list);
+			echo "Format: " . $this->format->type . " (" . $this->format->number_of_qualifiers . " Qualifiers)\n";
+			echo "\n" . print_winnings($this->ranking_list);
 			echo "\xA";
 			echo "Teams: ";
 			foreach($this->teams as $team) {

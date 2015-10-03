@@ -8,6 +8,7 @@ include_once 'curling.php';
 		public $linescore;
 		public $hammer;
 		public $date;
+		public $game_id; //Used for DB
 		
 		public function __construct($team1, $team2, $linescore, $hammer, $date) {
 			$this->team1 = $team1;

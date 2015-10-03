@@ -8,6 +8,7 @@
 	include_once 'location.php';
 	include_once 'event_team_points.php';
 	include_once 'stats.php';
+	include_once 'format.php';
 	//Is given the number 1 ... 4 and returns the string for that position (i.e. "Skip" "Third" etc.)
 	function number_to_position($number) {
 		if ($number == 1) return "Lead";

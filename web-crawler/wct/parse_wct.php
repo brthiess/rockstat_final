@@ -46,10 +46,11 @@ function get_basic_event_information_wct($schedule_html, $event_url) {
 	$end_date = get_event_date_wct($schedule_html, $event_url, "end");
 	$event_purse = get_event_purse_wct($schedule_html, $event_url);
 	$event_currency = get_event_currency_wct($schedule_html, $event_url);
-	$event_teams = get_event_teams_wct($event_url);
+	$event_teams = get_event_teams_wct($event_url, $event_gender);
 	$event_winnings = get_event_winnings_wct($event_url);
+	$event_format = get_event_format_wct($event_url);
 	
-	$event = new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender, $event_teams, $event_category, $event_winnings);
+	$event = new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender, $event_teams, $event_category, $event_winnings, $event_format);
 	$event->print_event();
 	return $event;
 }
@@ -69,14 +70,13 @@ function parse_wct_event_page($html, $event) {
 	//Get each game
 	$games = $html->find(".linescorebox");	
 	foreach($games as $game){		
-		list($team1, $team2) = get_teams_wct($game, $event->category);	
+		list($team1, $team2) = get_teams_wct($game, $event->category, $event->gender);	
 		$hammer = get_hammer_wct($game);
 		$linescore = get_linescore_wct($game);
 		
 		$new_game = new Game($team1, $team2, $linescore, $hammer, $draw_time);
 		$new_game->print_game();
-		$handle = fopen ("php://stdin","r");
-		$line = fgets($handle);
+
 		//Push a new game onto the game_objects array
 		array_push($game_objects, $new_game);
 	}

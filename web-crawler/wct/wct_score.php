@@ -1,13 +1,13 @@
 <?php
 
 //Is given the html dom .linescorebox for a game and the event category (slam or regular wct).  Returns an array of two teams
-function get_teams_wct($linescorebox, $event_category){ 
-	if (stripos($event_category, "WCT") !== false) return get_teams_wct_normal($linescorebox);
-	else if (stripos($event_category, "Slam") !== false) return get_teams_wct_slam($linescorebox);
+function get_teams_wct($linescorebox, $event_category, $gender){ 
+	if (stripos($event_category, "WCT") !== false) return get_teams_wct_normal($linescorebox, $gender);
+	else if (stripos($event_category, "Slam") !== false) return get_teams_wct_slam($linescorebox, $gender);
 	else echo "****No valid event category given*****";
 }
 
-function get_teams_wct_normal($linescorebox) {
+function get_teams_wct_normal($linescorebox, $gender) {
 	$players_html = $linescorebox->next_sibling();
 			while($players_html->tag != 'table') {
 				$players_html = $players_html->next_sibling();
@@ -32,20 +32,22 @@ function get_teams_wct_normal($linescorebox) {
 				$last_name = substr($name, $br_position + 4, $bold_end_position - $br_position - 4);
 				
 				if ($player_count < 4) {
-					$team1->add_player(new Player($first_name, $last_name, $position));
+					$team1->add_player(new Player($first_name, $last_name, $position, null, $gender));
 				}
 				else if ($player_count < 8) {
-					$team2->add_player(new Player($first_name, $last_name, $position));
+					$team2->add_player(new Player($first_name, $last_name, $position, null, $gender));
 				}
 				else {
 					echo "ERROR: More than 8 players";
 				}
 				$player_count++;
 			}
+			$team1->gender = $gender;
+			$team2->gender = $gender;
 			return array($team1, $team2);
 }
 
-function get_teams_wct_slam($linescorebox) {
+function get_teams_wct_slam($linescorebox, $gender) {
 	$players_html = $linescorebox->next_sibling();
 			while($players_html->tag != 'table') {
 				$players_html = $players_html->next_sibling();
@@ -67,10 +69,10 @@ function get_teams_wct_slam($linescorebox) {
 		$number_of_shots = preg_replace("/[^0-9]/","",$stats_html[$i * 6 + 1]);
 		
 		if ($player_count < 4) {
-			$team1->add_player(new Player($first_name, $last_name, $position, new Stats($percentage, $number_of_shots)));
+			$team1->add_player(new Player($first_name, $last_name, $position, new Stats($percentage, $number_of_shots), $gender));
 		}
 		else if ($player_count < 8) {
-			$team2->add_player(new Player($first_name, $last_name, $position, new Stats($percentage, $number_of_shots)));
+			$team2->add_player(new Player($first_name, $last_name, $position, new Stats($percentage, $number_of_shots), $gender));
 		}
 		else {
 			echo "ERROR: More than 8 players";
@@ -78,6 +80,8 @@ function get_teams_wct_slam($linescorebox) {
 		$player_count++;
 
 	}
+	$team1->gender = $gender;
+	$team2->gender = $gender;
 	return array($team1, $team2);
 		
 }

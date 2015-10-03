@@ -3,6 +3,7 @@ include_once "simple_html_dom.php";
 include_once "constants.php";
 include_once "wct/parse_wct.php";
 include_once "db/input.php";
+include_once "fake_data.php";
 
 // Create DOM from URL or file
 $schedule_url = 'http://www.worldcurl.com/schedule.php?eventtypeid=21';
@@ -11,7 +12,8 @@ $schedule_html = get_html($schedule_url);
 $next_event_url = get_next_event_url($schedule_html, null);	
 
 while($next_event_url != null){
-	$parsed_event_html = parse_event_html($schedule_html, $next_event_url);
+	//$parsed_event_html = parse_event_html($schedule_html, $next_event_url);
+	$parsed_event_html = fake_event_data();
 	if ($parsed_event_html != null)
 		input_html($parsed_event_html);
 	$next_event_url = get_next_event_url($schedule_html, $next_event_url);	
@@ -19,7 +21,15 @@ while($next_event_url != null){
 
 //Gets the html dom object from the given url
 function get_html($url){
-	$html = file_get_html($url);
+	while(true) {
+		try {
+			$html = file_get_html($url);
+			break;
+		}
+		catch(Exception $e) {
+			echo "\n**Failed to get html.  Trying again**\n";
+		}
+	}
 	return replace_links_with_base_url(get_base_url($url), $html);
 }
 
@@ -42,7 +52,6 @@ function parse_event_html($schedule_html, $event_url){
 
 //Returns the next event URL to visit
 function get_next_event_url($schedule_html, $previous_event_url) {
-	return "http://www.worldcurl.com/events.php?task=Event&eventid=3826";
 	$urls = $schedule_html->find("a");
 	
 	$found_previous_url = false;
@@ -87,5 +96,7 @@ function get_base_url($url) {
 	$position = strposOffset("/", $url, 3);
 	return substr($url, 0, $position + 1);	
 }
+
+
 
 ?>

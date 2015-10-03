@@ -147,7 +147,7 @@ function get_event_currency_wct($schedule_html, $event_url) {
 	return substr($purse_string, $open_bracket_position + 1, $closed_bracket_position - $open_bracket_position - 1);
 }
 
-function get_event_teams_wct($event_url) {
+function get_event_teams_wct($event_url, $gender) {
 	$teams_url = $event_url . "&view=Teams";
 	$teams_html = get_html($teams_url);
 	$team_names = $teams_html->find(".wctlight_team_text");
@@ -161,8 +161,9 @@ function get_event_teams_wct($event_url) {
 		for ($k = 4; $k >= 1; $k--) {
 			$first_name = explode("<br>", $player_names[$i * 4 + 4 - $k]->innertext)[0];
 			$last_name = explode("<br>", $player_names[$i * 4 + 4 - $k]->innertext)[1];
-			$team->add_player(new Player($first_name, $last_name, number_to_position($k)));
+			$team->add_player(new Player($first_name, $last_name, number_to_position($k), null, $gender));
 		}
+		$team->gender = $gender;
 		array_push($team_objects, $team);
 	}
 	return $team_objects;
@@ -175,7 +176,7 @@ function get_event_winnings_wct($event_url) {
 	$money_list;
 	for ($i = 0; $i < count($prize_purse); $i++) {
 		if (stripos($prize_purse[$i], "prize purse") !== false) {
-			echo $prize_purse[$i];
+			//echo $prize_purse[$i];
 			$money_list = $prize_purse[$i]->parent()->parent()->parent()->next_sibling();
 			break;
 		}
@@ -190,6 +191,10 @@ function get_event_winnings_wct($event_url) {
 		$points = get_points_wct($info[3]);
 		array_push($event_winnings_objects, new Event_Team_Points($team, $money, $points, $rank));
 	}
+	if (count($event_winnings_objects) == 0) {
+		echo "\n****Error: No rankings found.  Going to look at playoffs draw*****\n";
+		$event_winnings_objects = get_event_winnings_wct_workaround($event_url);
+	}
 	return $event_winnings_objects;
 
 }
@@ -202,6 +207,39 @@ function get_event_category_wct($schedule_html, $event_url) {
 	else {
 		RETURN WCT;
 	}
+}
+
+//If getting the initial rankings failed, this function will do a less reliable lookup at the playoffs page
+function get_event_winnings_wct_workaround($event_url) {
+	$event_playoffs_html = get_html($event_url . "&view=Playoffs");
+	$bracket_html = $event_playoffs_html->find("font.teams");
+	echo "Count: " . count($bracket_html);
+	$html_bracket_rank = 1;
+	$teams_found = array();
+	$event_winnings_objects = array();
+	//Go backwards through the bracket.  Start at champ and work way backwards.
+	foreach($bracket_html as $team_bracket) {
+		$team = get_team_wct($team_bracket->plaintext);
+		//If the team has not already been added, add it.
+		if (!in_array($team, $teams_found)) {
+			array_push($event_winnings_objects, new Event_Team_Points($team, -1, -1, 6));
+			array_push($teams_found, $team);
+		}
+	}
+	if (count($event_winnings_objects) == 0) {
+		echo "\n****Error: No rankings found again...***\n";
+	}
+	return $event_winnings_objects;
+}
+
+function get_event_format_wct($event_url) {
+	$event_html = get_html($event_url);
+	$event_info_html = $event_html->find(".wctlight");
+	$number_of_qualifiers = preg_replace("/[^0-9]/","",substr($event_info_html[7]->plaintext, stripos($event_info_html[7]->plaintext, "(")));
+	$event_type = $event_info_html[9]->plaintext;
+	//echo "Number of qualifiers: " . $number_of_qualifiers;
+	//echo "Event Type: " . $event_type;
+	return new Format($event_type, $number_of_qualifiers);
 }
 
 ?>

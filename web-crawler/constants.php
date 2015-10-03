@@ -15,8 +15,9 @@ define("WCT_EVENT_PAGE", 9);
 define("WCT_SCHEDULE_PAGE", 10);
 
 define("GRAND_SLAM", "Grand Slam");
-define("WCT", "WCT ");
+define("WCT", "WCT");
 define("REGIONAL", "Regional");
+
 
 $MONTHS = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"); 
 

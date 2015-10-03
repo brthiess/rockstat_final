@@ -3,6 +3,7 @@
 	class End {
 		public $team1_score;
 		public $team2_score;
+		public $end_id;  //Used for DB
 		
 		public function __construct($team1_score, $team2_score) {
 			$this->team1_score = $team1_score;
