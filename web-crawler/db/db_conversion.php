@@ -10,7 +10,7 @@
 			return 1;
 		}
 		else {
-			echo "****Error: No gender found.  Assuming male****";
+			echo "****Error: No gender found.  Assuming male.  db_conversion.php****";
 			return 0;
 		}
 	}

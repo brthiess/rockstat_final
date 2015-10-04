@@ -1,5 +1,5 @@
 <?php
-	include_once 'db_connect.php';
+	
 	include_once 'insert_db.php';
 	
 	//Takes an event object and inputs the data into the DB

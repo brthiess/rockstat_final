@@ -1,53 +1,79 @@
 <?php 
 	//Returns fake event data for testing
 	function fake_event_data() {
-		$event = new Event(new Location("Edmonton", "Alberta"), new DateTime("03/01/2015"), new DateTime("03/05/2015"), "50000", "CDN", "The Brad Thiessen Classic", MEN, get_fake_teams(), WCT, get_fake_ranking_list(), "Triple Knockout")
+		$event = new Event(new Location("Edmonton", "Alberta"), new DateTime("03/01/2015"), new DateTime("03/05/2015"), "50000", "CDN", "The Brad Thiessen Classic", MEN, get_fake_teams(), WCT, get_fake_ranking_list(), "Triple Knockout");
 		$event->games = get_fake_games();
+		return $event;
 	}
 	
 	function get_fake_teams() {
 		$teams = array();
 		$team = new Team();
-		$team->add_player("Joe", "Blow", 1, get_fake_stats(), MEN);
-		$team->add_player("Brad", "Thiessen", 2, get_fake_stats(), MEN);
-		$team->add_player("Tom", "Appelman", 3, get_fake_stats(), MEN);
-		$team->add_player("Brendan", "Bottcher", 4, get_fake_stats(), MEN);
+		$team->add_player(new Player("Joe", "Blow", 1, get_fake_stats(), MEN));
+		$team->add_player(new Player("Brad", "Thiessen", 2, get_fake_stats(), MEN));
+		$team->add_player(new Player("Tom", "Appelman", 3, get_fake_stats(), MEN));
+		$team->add_player(new Player("Brad", "Gushue", 4, get_fake_stats(), MEN));
+		$team->gender = MEN;
 		array_push($teams, $team);
 		
 		$team = new Team();
-		$team->add_player("Karrick", "Martin", 1, get_fake_stats(), MEN);
-		$team->add_player("Brad", "Thiessen", 2, get_fake_stats(), MEN);
-		$team->add_player("Tom", "Appelman", 3, get_fake_stats(), MEN);
-		$team->add_player("Brendan", "Bottcher", 4, get_fake_stats(), MEN);
+		$team->add_player(new Player("Karrick", "Martin", 1, get_fake_stats(), MEN));
+		$team->add_player(new Player("Brad", "Thiessen", 2, get_fake_stats(), MEN));
+		$team->add_player(new Player("Tom", "Appelman", 3, get_fake_stats(), MEN));
+		$team->add_player(new Player("Brendan", "Bottcher", 4, get_fake_stats(), MEN));
+		$team->gender = MEN;
 		array_push($teams, $team);
 		
 		$team = new Team();
-		$team->add_player("Karrick", "Martin", 1, get_fake_stats(), MEN);
-		$team->add_player("Brad", "Thiessen", 2, get_fake_stats(), MEN);
-		$team->add_player("Tom", "Appelman", 3, get_fake_stats(), MEN);
-		$team->add_player("Brandan", "Bottcher", 4, get_fake_stats(), MEN);
+		$team->add_player(new Player("Karrick", "Martin", 1, get_fake_stats(), MEN));
+		$team->add_player(new Player("Brad", "Thiessen", 2, get_fake_stats(), MEN));
+		$team->add_player(new Player("Tom", "Appelman", 3, get_fake_stats(), MEN));
+		$team->add_player(new Player("Brandan", "Bottcher", 4, get_fake_stats(), MEN));
+		$team->gender = MEN;
 		array_push($teams, $team);
 		
 		$team = new Team();
-		$team->add_player("Brad Test", "Gushue", 1, get_fake_stats(), MEN);
-		$team->add_player("Brad", "Thiessen", 2, get_fake_stats(), MEN);
-		$team->add_player("Blah", "Appelman", 3, get_fake_stats(), MEN);
-		$team->add_player("Skip", "Martin", 4, get_fake_stats(), MEN);
+		$team->add_player(new Player("Brad Test", "Gushue", 1, get_fake_stats(), MEN));
+		$team->add_player(new Player("Brad", "Thiessen", 2, get_fake_stats(), MEN));
+		$team->add_player(new Player("Blah", "Appelman", 3, get_fake_stats(), MEN));
+		$team->add_player(new Player("Skip", "Martin", 4, get_fake_stats(), MEN));
+		$team->gender = MEN;
 		array_push($teams, $team);
 		
 		$team = new Team();
-		$team->add_player("Blah", "Martin", 1, get_fake_stats(), MEN);
-		$team->add_player("Brad", "Thiessen", 2, get_fake_stats(), MEN);
-		$team->add_player("Test", "Third", 3, get_fake_stats(), MEN);
-		$team->add_player("Brendan", "Bottcher", 4, get_fake_stats(), MEN);
+		$team->add_player(new Player("Blah", "Martin", 1, get_fake_stats(), MEN));
+		$team->add_player(new Player("Brad", "Thiessen", 2, get_fake_stats(), MEN));
+		$team->add_player(new Player("Test", "Third", 3, get_fake_stats(), MEN));
+		$team->add_player(new Player("Brendan", "Bottcher", 4, get_fake_stats(), MEN));
+		$team->gender = MEN;
 		array_push($teams, $team);
 		
 		$team = new Team();
-		$team->add_player("Karrick", "Martin", 1, get_fake_stats(), MEN);
-		$team->add_player("Second", "Second", 2, get_fake_stats(), MEN);
-		$team->add_player("Tom", "Appelman", 3, get_fake_stats(), MEN);
-		$team->add_player("Brendan", "Bottcher", 4, get_fake_stats(), MEN);
-		array_push($teams, $team);		
+		$team->add_player(new Player("Karrick", "Martin", 1, get_fake_stats(), MEN));
+		$team->add_player(new Player("Second", "Second", 2, get_fake_stats(), MEN));
+		$team->add_player(new Player("Tom", "Appelman", 3, get_fake_stats(), MEN));
+		$team->add_player(new Player("Brendan", "Bottcher", 4, get_fake_stats(), MEN));
+		$team->gender = MEN;
+		array_push($teams, $team);	
+		
+		$team = new Team();
+		$team->add_player(new Player("Mark", "Nichols", 1, get_fake_stats(), MEN));
+		$team->add_player(new Player("Jacobs", "Brad", 2, get_fake_stats(), MEN));
+		$team->add_player(new Player("Tom", "Appelman", 3, get_fake_stats(), MEN));
+		$team->add_player(new Player("Ryan", "Fry", 4, get_fake_stats(), MEN));
+		$team->gender = MEN;
+		array_push($teams, $team);
+		
+		$team = new Team();
+		$team->add_player(new Player("DJ", "Neufeld", 1, get_fake_stats(), MEN));
+		$team->add_player(new Player("Mike", "Wozniak", 2, get_fake_stats(), MEN));
+		$team->add_player(new Player("BJ", "Neufeuld", 3, get_fake_stats(), MEN));
+		$team->add_player(new Player("Mike", "Mcewen", 4, get_fake_stats(), MEN));
+		$team->gender = MEN;
+		array_push($teams, $team);
+
+		
+		return $teams;
 	}
 	
 	function get_fake_stats() {
@@ -57,35 +83,45 @@
 	function get_fake_ranking_list() {
 		$ranking_list = array();
 		
-		$team = new Team();
-		$team->add_player("Joe", "Blow", 1, get_fake_stats(), MEN);
-		$team->add_player("Brad", "Thiessen", 2, get_fake_stats(), MEN);
-		$team->add_player("Tom", "Appelman", 3, get_fake_stats(), MEN);
-		$team->add_player("Brendan", "Bottcher", 4, get_fake_stats(), MEN);
+		$fake_teams = get_fake_teams();
 		
-		array_push($ranking_list, Event_Team_Points($team, "12000", "5.44", "1"));
+		$rank = 1;
+		$money = 15000;
+		$points = 12.5;
 		
-		$team = new Team();
-		$team->add_player("Blah", "Martin", 1, get_fake_stats(), MEN);
-		$team->add_player("Brad", "Thiessen", 2, get_fake_stats(), MEN);
-		$team->add_player("Test", "Third", 3, get_fake_stats(), MEN);
-		$team->add_player("Brendan", "Bottcher", 4, get_fake_stats(), MEN);
-		array_push($ranking_list, Event_Team_Points($team, "12000", "3.0", "2"));
-		
-		$team = new Team();
-		$team->add_player("Karrick", "Martin", 1, get_fake_stats(), MEN);
-		$team->add_player("Second", "Second", 2, get_fake_stats(), MEN);
-		$team->add_player("Mark", "Nichols", 3, get_fake_stats(), MEN);
-		$team->add_player("Brad", "Gushue", 4, get_fake_stats(), MEN);
-		array_push($ranking_list, Event_Team_Points($team, "12000", "2.5", "3"));
+		foreach($fake_teams as $team) {
+			array_push($ranking_list, new Event_Team_Points($team, $money, $points, $rank));
+			$rank++;
+			$money -= 2000;
+			$points -= 2;
+		}
 		
 		return $ranking_list;
 	}
 	
 	function get_fake_games() {
 		$teams = get_fake_teams();
+		$games = array();
+		for($i = 0; $i < 20; $i++) {
+			$linescore = get_fake_linescore();
+			$hammer = rand(0,1);
+			$date = new DateTime("03/01/2015");
+			array_push($games, new Game($teams[rand(0, count($teams) - 1)], $teams[rand(0, count($teams) - 1)], $linescore, $hammer, $date));
+		}
 		
-		
+		return $games;		
+	}
+	
+	function get_fake_linescore() {
+		$linescore = new LineScore();
+		for($end_number = 1; $end_number <= 8; $end_number++) {
+			if (rand(0,1) == 1) {
+				$linescore->addEnd(rand(0,5), 0);
+			}
+			else {
+				$linescore->addEnd(0, rand(0,5));
+			}		
+		}
 	}
 
 

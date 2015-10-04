@@ -16,6 +16,12 @@
 			}
 		}
 		
+		public function get_player($position){
+			foreach($this->players as $player) {
+				if ($player->position == $position) return $player;
+			}
+		}
+		
 		public function number_of_players() {
 			return count($this->players);
 		}

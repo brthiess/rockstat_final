@@ -36,5 +36,10 @@ function strposOffset($search, $string, $offset)
         return strlen(implode($search, array_slice($arr, 0, $offset)));
     }
 }
+function pause($string) {
+	echo "\n" . $string . "\n";
+	$handle = fopen ("php://stdin","r");
+	$line = fgets($handle);
+}
 
 ?>

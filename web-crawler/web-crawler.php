@@ -14,7 +14,8 @@ $next_event_url = get_next_event_url($schedule_html, null);
 while($next_event_url != null){
 	//$parsed_event_html = parse_event_html($schedule_html, $next_event_url);
 	$parsed_event_html = fake_event_data();
-	if ($parsed_event_html != null)
+	pause("Press Enter");
+	if ($parsed_event_html != null)		
 		input_html($parsed_event_html);
 	$next_event_url = get_next_event_url($schedule_html, $next_event_url);	
 }
