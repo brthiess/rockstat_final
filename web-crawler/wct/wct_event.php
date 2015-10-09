@@ -242,4 +242,17 @@ function get_event_format_wct($event_url) {
 	return new Format($event_type, $number_of_qualifiers);
 }
 
+function get_event_FGZ($event_category) {
+	if (stripos($event_category, "WCT") !== false) {
+		return 4;
+	}
+	else if (stripos($event_category, "Slam") !== false) {
+		return 5;
+	}
+	else {
+		echo "\n****Error: FGZ not found****";
+		return 4;
+	}
+}
+
 ?>

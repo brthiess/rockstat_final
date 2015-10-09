@@ -12,6 +12,7 @@
 
 			
 		//Insert Basic Event Information.  Get event id
+		insert_event($event);
 		
 		//Insert Event Rankings for each team. 
 		

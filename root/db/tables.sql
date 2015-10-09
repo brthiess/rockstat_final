@@ -35,12 +35,13 @@ CREATE TABLE player_team (
 
 
 CREATE TABLE event (
-	event_id INT NOT NULL PRIMARY KEY,
+	event_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(50),
 	type VARCHAR(25),
 	fgz INT,
 	category VARCHAR(30),
-	location VARCHAR(50),
+	city VARCHAR(50),
+	province VARCHAR(50),
 	start_date DATE,
 	end_date DATE,
 	purse INT,

@@ -47,6 +47,21 @@
 			}
 		}
 		
+		public function print_team_with_ids() {
+			foreach($this->players as $player) {
+				echo $player->position;
+				echo ': ';
+				echo $player->first_name;
+				echo ' ';
+				echo $player->last_name;
+				echo "\t";
+				if (strlen($player->last_name . $player->first_name) < 12) echo "\t";		//Add extra tab if player has short name
+				echo "ID: " . $player->player_id . "\t";
+				echo $player->print_stats();
+				echo "\xA";				
+			}
+		}
+		
 		public function print_position($position) {
 			if ($position == "Skip") {
 				foreach($this->players as $player) {

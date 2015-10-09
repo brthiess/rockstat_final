@@ -12,10 +12,11 @@
 		public $teams;
 		public $category;		//WCT or Slam or CCA etc.
 		public $ranking_list;
-		public $format;
+		public $format;			//Triple or Round Robin.
+		public $FGZ;			//Number of FGZ.  4 or 5 most likely
 		public $event_id; //Used for DB
 		
-		public function __construct($location, $start_date, $end_date, $purse, $currency, $name, $gender, $teams, $category, $ranking_list, $format){
+		public function __construct($location, $start_date, $end_date, $purse, $currency, $name, $gender, $teams, $category, $ranking_list, $format, $FGZ){
 			$this->location = $location;
 			$this->start_date = $start_date;
 			$this->end_date = $end_date;
@@ -28,6 +29,7 @@
 			$this->category = trim($category);
 			$this->ranking_list = $ranking_list;
 			$this->format = $format;
+			$this->FGZ = $FGZ;
 		}
 		
 		public function print_event() {
@@ -40,6 +42,7 @@
 			echo "Purse: " . $this->purse . " " . $this->currency . "\n";			
 			echo "Gender: " . $this->gender . "\n";
 			echo "Format: " . $this->format->type . " (" . $this->format->number_of_qualifiers . " Qualifiers)\n";
+			echo "FGZ: " . $this->FGZ . " Rock Rule\n";
 			echo "\n" . print_winnings($this->ranking_list);
 			echo "\xA";
 			echo "Teams: ";
