@@ -81,11 +81,16 @@
 	function insert_event($event) {		
 		$event->print_event();
 		
+		$start_date = date("Y-m-d", $event->start_date);
+		$end_date = date("Y-m-d", $event->end_date);
+		
+		
 		$conn = db_connect();
-		$stmt = $conn->prepare("SELECT insert_event(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		$stmt->bind_param("ssisssssii", $event->name, $event->format, $event->FGZ, $event->category, $event->location->city, $event->location->province, $event->start_date->format('Y-m-d'), $event->end_date->format('Y-m-d'), $event->purse, $event->gender);
+		$stmt = $conn->prepare("SELECT insert_event(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param("ssiisssssii", $event->name, $event->format->type, $event->number_of_qualifiers, $event->FGZ, $event->category, $event->location->city, $event->location->province, $start_date, $end_date, $event->purse, $event->currency, $event->gender);
 		$stmt->execute();
-		$event_id = $stmt->get_result()->fetch_array(MYSQLI_NUM)[0];
+		$result = $stmt->get_result();
+		$event_id = $result->fetch_array(MYSQLI_NUM)[0];
 		pause("\nEvent ID Returned: " . $event_id);
 		return $event_id;
 	}

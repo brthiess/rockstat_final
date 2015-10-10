@@ -36,8 +36,9 @@ CREATE TABLE player_team (
 
 CREATE TABLE event (
 	event_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(50),
+	name VARCHAR(500),
 	type VARCHAR(25),
+	number_of_qualifiers TINYINT,
 	fgz INT,
 	category VARCHAR(30),
 	city VARCHAR(50),
@@ -45,6 +46,7 @@ CREATE TABLE event (
 	start_date DATE,
 	end_date DATE,
 	purse INT,
+	currency VARCHAR(10),
 	gender TINYINT(1)
 );
 

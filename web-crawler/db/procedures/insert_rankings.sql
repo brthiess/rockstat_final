@@ -1,7 +1,7 @@
 DELIMITER //
-DROP FUNCTION IF EXISTS insert_event;
+DROP FUNCTION IF EXISTS insert_rankings;
 
-CREATE FUNCTION insert_event
+CREATE FUNCTION insert_rankings
 (name_input VARCHAR(500), type_input VARCHAR(25), number_of_qualifiers_input INT, fgz_input INT, category_input VARCHAR(30), city_input VARCHAR(50), province_input VARCHAR(50), start_date_input DATE, end_date_input DATE, purse_input INT, currency_input VARCHAR(50), gender_input TINYINT(1))
 RETURNS INT DETERMINISTIC
 BEGIN

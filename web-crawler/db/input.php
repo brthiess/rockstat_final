@@ -15,7 +15,7 @@
 		insert_event($event);
 		
 		//Insert Event Rankings for each team. 
-		
+		insert_rankings($event->ranking_list);
 		//For each game
 			//Insert  game with the dates and event_id.  Get game id
 			//For each player

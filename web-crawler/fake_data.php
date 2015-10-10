@@ -1,7 +1,7 @@
 <?php 
 	//Returns fake event data for testing
 	function fake_event_data() {
-		$event = new Event(new Location("Edmonton", "Alberta"), new DateTime("03/01/2015"), new DateTime("03/05/2015"), "50000", "CDN", "The Brad Thiessen Classic", MEN, get_fake_teams(), WCT, get_fake_ranking_list(), "Triple Knockout", 4);
+		$event = new Event(new Location("Edmonton", "Alberta"), mktime(0,0,0,3,1,2015), mktime(0,0,0,3,4,2015), 50000, "CDN", "The Brad Thiessen Classic", MEN, get_fake_teams(), WCT, get_fake_ranking_list(), new Format("Triple Knockout", 8), 4);
 		$event->games = get_fake_games();
 		return $event;
 	}
