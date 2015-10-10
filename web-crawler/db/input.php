@@ -23,6 +23,7 @@
 		insert_games($event->games, $event->event_id);
 			//Insert  game with the dates and event_id.  Get game id
 			//For each player
+			
 				//Insert into player_game: player_id, game_id, percentage, num_shots
 			//For each end
 				//Insert relevant info

@@ -42,5 +42,10 @@
 				return 4;
 			}
 		}
+		
+		public function print_player() {
+			echo "\nName: " . $this->first_name . " " . $this->last_name . "\t";
+			print_stats();
+		}
 	}
 ?>

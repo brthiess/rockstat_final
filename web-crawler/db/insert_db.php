@@ -113,21 +113,97 @@
 		}	
 	}
 	
-	function insert_games($games, $event_id) {
-		$conn = db_connect();
+	function insert_games($games, $event_id) {		
 		foreach($games as $game) {
-			$game->print_game();
-			$game_date =  $game->date->format("Y-m-d H:i:s");
-			echo "\nDate: " . $game_date;
-			pause(" ");
-			
-			$stmt = $conn->prepare("SELECT insert_game(?, ?)");
-			$stmt->bind_param("is", $event_id, $game_date);
-			$stmt->execute();
-			$result = $stmt->get_result();
-			$game_id = $result->fetch_array(MYSQLI_NUM)[0];
-			$game->game_id = $game_id;
-			$stmt->close();
+			insert_game($game, $event_id);
+			insert_game_stats($game);
+			insert_linescore($game);
+			insert_winner($game);
 		}
+	}
+	
+	function insert_game($game, $event_id) {
+		$conn = db_connect();
+		$game->print_game();
+		$game_date =  $game->date->format("Y-m-d H:i:s");
+		echo "\nDate: " . $game_date;
+		pause(" ");
+		
+		$stmt = $conn->prepare("SELECT insert_game(?, ?)");
+		$stmt->bind_param("is", $event_id, $game_date);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$game_id = $result->fetch_array(MYSQLI_NUM)[0];
+		$game->game_id = $game_id;
+		$stmt->close();
+	}
+	
+	function insert_game_stats($game) {
+		$conn = db_connect();
+		insert_team_stats($game->team1, $game->game_id);
+		insert_team_stats($game->team2, $game->game_id);
+	}
+	
+	function insert_team_stats($team, $game_id) {
+		$players = $team->players;
+		foreach($players as $player) {
+			insert_player_stats($player, $game_id);
+		}
+	}
+	
+	function insert_player_stats($player, $game_id) {
+		$conn = db_connect();
+		echo "\nInsert Player Stats: ";
+		$player->print_player();
+		pause(" ");
+		$stmt = $conn->prepare("SELECT insert_player_stats(?, ?, ?, ?)");
+		$stmt->bind_param("iidi", $player->player_id, $game_id, $player->stats->percentage, $player->stats->number_of_shots);
+		$stmt->execute();
+		$stmt->close();
+	}
+	
+	function insert_linescore($game) {
+		$ends = $game->linescore->ends;
+		$end_number = 1;
+		foreach($ends as $end) {
+			insert_end($end, $end_number, $game_id);
+			$end_number++;
+		}
+	}
+	
+	function insert_end($end, $end_number, $game_id) {		
+		insert_end_game($end_number, $game_id);		
+		
+		
+	end_id INT NOT NULL,
+	team_id INT NOT NULL,
+	score TINYINT,
+	differential TINYINT,	
+	hammer BOOLEAN,	
+		
+		
+		echo "\nTeam 1 Score: " . $team1_score;
+		echo "\nTeam 2 Score: " . $team2_score;
+		pause(" ");
+		
+		$stmt = $conn->prepare("SELECT insert_end(?, ?, ?, ?, ?)");
+		$stmt->bind_param("iiiii", $end->end_id, $t);
+		$stmt->execute();
+		$stmt->close();
+	}
+	
+	function insert_end_game($end_number, $game_id) {
+		$conn = db_connect();
+		echo "\nInsert End Game: ";
+		echo "\nEnd Number: " . $end_number;
+		echo "\nGame ID: " . $game_id;
+		pause(" ");
+		$stmt = $conn->prepare("SELECT insert_end_game(?, ?)");
+		$stmt->bind_param("ii", $end_number, $game_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$end_id = $result->fetch_array(MYSQLI_NUM)[0];
+		$end->end_id = $end_id;
+		$stmt->close();
 	}
 ?>

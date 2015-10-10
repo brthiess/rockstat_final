@@ -79,7 +79,7 @@ CREATE TABLE player_game (
 );
 
 CREATE TABLE end_game (
-	end_id INT NOT NULL PRIMARY KEY,
+	end_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	end_number TINYINT(1),
 	game_id INT NOT NULL,
 	FOREIGN KEY (game_id) REFERENCES game(game_id)

@@ -6,6 +6,11 @@
 			//pause(" ");
 			update_id($ranking->team, $event->teams);
 		}
+		$games = $event->games;
+		foreach($games as $game) {
+			update_id($game->team1, $event->teams);
+			update_id($game->team2, $event->teams);
+		}
 		
 	}
 	
@@ -68,6 +73,7 @@
 		echo "\nPlayer 2: " . $player2->first_name . " " . $player2->last_name;
 		if (stripos($player1->first_name, $player2->first_name) !== false || stripos($player2->first_name, $player1->first_name) !== false) {
 			if (stripos($player1->last_name, $player2->last_name) !== false || stripos($player2->last_name, $player1->last_name) !== false) {
+				$player1->player_id = $player2->player_id;
 				echo "\nPlayers Match";
 				//pause(" ");
 				return true;
