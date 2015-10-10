@@ -14,8 +14,16 @@
 			$this->rank = $rank;
 		}
 		
+		public function print_individual_team_winnings() {
+			echo "\nMoney: " . $this->money;
+			echo "\nPoints: " . $this->points;
+			echo "\nRank: " . $this->rank;
+		}
+		
 
 	}
+	
+
 	
 	//Is given an array of Event_Team_Points objects and prints them out in a nice fashion
 	function print_winnings($event_winnings_objects) {

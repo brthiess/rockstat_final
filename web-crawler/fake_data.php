@@ -105,7 +105,7 @@
 		for($i = 0; $i < 20; $i++) {
 			$linescore = get_fake_linescore();
 			$hammer = rand(0,1);
-			$date = new DateTime("03/01/2015");
+			$date = date_create("2015-03-01 2:30");
 			array_push($games, new Game($teams[rand(0, count($teams) - 1)], $teams[rand(0, count($teams) - 1)], $linescore, $hammer, $date));
 		}
 		
@@ -122,6 +122,7 @@
 				$linescore->addEnd(0, rand(0,5));
 			}		
 		}
+		return $linescore;
 	}
 
 

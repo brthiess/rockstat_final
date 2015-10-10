@@ -2,35 +2,20 @@ DELIMITER //
 DROP FUNCTION IF EXISTS insert_rankings;
 
 CREATE FUNCTION insert_rankings
-(name_input VARCHAR(500), type_input VARCHAR(25), number_of_qualifiers_input INT, fgz_input INT, category_input VARCHAR(30), city_input VARCHAR(50), province_input VARCHAR(50), start_date_input DATE, end_date_input DATE, purse_input INT, currency_input VARCHAR(50), gender_input TINYINT(1))
+(team_id_input INT, event_id_input INT, event_rank_input INT, amount_won_input INT, points_won_input FLOAT)
 RETURNS INT DETERMINISTIC
 BEGIN
   
-	DECLARE 	event_id_var	INT DEFAULT -1;
-
-	
-	SELECT 		event_id 
-	INTO		event_id_var
-	FROM 		event
-	WHERE		name LIKE name_input
-	AND 		type = type_input
-	AND 		fgz = fgz_input
-	AND			category = category_input
-	AND			city_input = city_input
-	AND			province_input = province_input
-	AND 		start_date = start_date_input
-	AND			end_date = end_date_input
-	AND			gender = gender_input;
-		
-	IF (event_id_var != -1) THEN
-		RETURN event_id_var;
-	ELSE
-		INSERT INTO event (name, type, number_of_qualifiers, fgz, category, city, province, start_date, end_date, purse, currency, gender)
-		VALUES		(name_input, type_input, number_of_qualifiers_input, fgz_input, category_input, city_input, province_input, start_date_input, end_date_input, purse_input, currency_input, gender_input);
-		SET 		event_id_var = LAST_INSERT_ID();
+	IF NOT EXISTS  (SELECT 	* 
+					FROM 	event_team
+					WHERE 	team_id = team_id_input
+					AND		event_id = event_id_input)
+	THEN
+		INSERT INTO event_team (team_id, event_id, event_rank, amount_won, points_won)
+		VALUES	(team_id_input, event_id_input, event_rank_input, amount_won_input, points_won_input);
 	END IF;
 	
-	return event_id_var;
-				
+	RETURN 1;
+	
 END //
 DELIMITER ;

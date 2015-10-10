@@ -19,6 +19,7 @@ function db_connect() {
     // If connection was not successful, handle the error
     if($connection === false) {
         // Handle error - notify administrator, log to a file, show an error screen, etc.
+		echo "\n********Connection Error******\n";
         return mysqli_connect_error(); 
     }
     return $connection;

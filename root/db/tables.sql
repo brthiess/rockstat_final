@@ -57,14 +57,15 @@ CREATE TABLE event_team (
 	amount_won INT,
 	points_won FLOAT,
 	FOREIGN KEY (team_id) REFERENCES team(team_id),
-	FOREIGN KEY (event_id) REFERENCES event(event_id)
+	FOREIGN KEY (event_id) REFERENCES event(event_id),
+	CONSTRAINT unique_event_team UNIQUE(team_id, event_id)
 );
 
 CREATE TABLE game (
-	game_id INT NOT NULL PRIMARY KEY,
+	game_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	event_id INT NOT NULL,
 	FOREIGN KEY (event_id) REFERENCES event(event_id),
-	date DATE
+	date DATETIME
 );
 
 CREATE TABLE player_game (

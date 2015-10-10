@@ -20,6 +20,7 @@
 			foreach($this->players as $player) {
 				if ($player->position == $position) return $player;
 			}
+			return new Player("First Name", "Last Name", 4);
 		}
 		
 		public function number_of_players() {
