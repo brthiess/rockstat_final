@@ -42,4 +42,25 @@ function pause($string) {
 	$line = fgets($handle);
 }
 
+function get_team_from_last_name($last_name, $teams) {
+	foreach($teams as $team) {
+		if (last_name_is_skip($last_name, $team)) {
+			return $team;
+		}
+	}
+}
+
+//Returns true if the last name is the skip of the team
+function last_name_is_skip($last_name, $team) {
+	$skip = $team->get_position(4);
+	$vice = $team->get_position(3);
+	if (trim($skip->last_name) == trim($last_name) || trim($vice->last_name) == trim($last_name)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+	
+}
+
 ?>

@@ -53,8 +53,8 @@
 			return true;
 		}
 		if ($skip_matches) {
-			echo "\n***Warning: Only Skip Matches***";
-			return true;
+			echo "\n\n***Warning: Only Skip Matches***\n\n";
+			return false;
 		}
 		return false;
 	}

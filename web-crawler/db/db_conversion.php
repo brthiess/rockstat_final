@@ -14,6 +14,15 @@
 			return 0;
 		}
 	}
+	
+	function boolean_to_db($boolean) {
+		if ($boolean == true) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
 
 
 ?>

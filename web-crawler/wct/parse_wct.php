@@ -47,7 +47,7 @@ function get_basic_event_information_wct($schedule_html, $event_url) {
 	$event_purse = get_event_purse_wct($schedule_html, $event_url);
 	$event_currency = get_event_currency_wct($schedule_html, $event_url);
 	$event_teams = get_event_teams_wct($event_url, $event_gender);
-	$event_winnings = get_event_winnings_wct($event_url);
+	$event_winnings = get_event_winnings_wct($event_url, $event_teams);
 	$event_format = get_event_format_wct($event_url);
 	$event_FGZ = get_event_FGZ($event->category);
 	

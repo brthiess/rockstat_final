@@ -1,16 +1,9 @@
 <?php
 
-function get_rank_wct($rank_string){ 
-	return preg_replace("/[^0-9]/","",$rank_string);
-}
-
-function get_team_wct($team_string){
+function get_team_wct($team_string, $teams){
 	$comma_position = stripos($team_string, ",");
 	$last_name = trim(substr($team_string, 0, $comma_position));
-	$first_name = trim(substr($team_string, $comma_position + 1));
-	$player = new Player($first_name, $last_name, "Skip");
-	$team = new Team();
-	$team->add_player($player);
+	$team = get_team_from_last_name($last_name, $teams);
 	return $team;
 }
 

@@ -53,7 +53,6 @@ CREATE TABLE event (
 CREATE TABLE event_team (
 	team_id INT NOT NULL,
 	event_id INT NOT NULL,
-	event_rank INT,
 	amount_won INT,
 	points_won FLOAT,
 	FOREIGN KEY (team_id) REFERENCES team(team_id),
@@ -80,7 +79,7 @@ CREATE TABLE player_game (
 
 CREATE TABLE end_game (
 	end_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	end_number TINYINT(1),
+	end_number TINYINT(2),
 	game_id INT NOT NULL,
 	FOREIGN KEY (game_id) REFERENCES game(game_id)
 );
@@ -90,7 +89,7 @@ CREATE TABLE end (
 	team_id INT NOT NULL,
 	score TINYINT,
 	differential TINYINT,	
-	hammer BOOLEAN,			
+	hammer BIT,			
 	PRIMARY KEY(end_id, team_id),
 	FOREIGN KEY (end_id) REFERENCES end_game(end_id),
 	FOREIGN KEY (team_id) REFERENCES team(team_id)

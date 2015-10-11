@@ -170,7 +170,7 @@ function get_event_teams_wct($event_url, $gender) {
 }
 
 //Is given the event url and returns an array of the winnings each team received
-function get_event_winnings_wct($event_url) {
+function get_event_winnings_wct($event_url, $teams) {
 	$event_page_html = get_html($event_url . "&view=Money");
 	$prize_purse = $event_page_html->find(".wctlight");
 	$money_list;
@@ -185,11 +185,10 @@ function get_event_winnings_wct($event_url) {
 	$event_winnings_objects = array();
 	for($i = 1; $i < count($rows); $i++) {
 		$info = $rows[$i]->find("td");
-		$rank = get_rank_wct($info[0]->plaintext);
-		$team = get_team_wct($info[1]->plaintext);
+		$team = get_team_wct($info[1]->plaintext, $teams);
 		$money = get_money_winnings_wct($info[2]);
 		$points = get_points_wct($info[3]);
-		array_push($event_winnings_objects, new Event_Team_Points($team, $money, $points, $rank));
+		array_push($event_winnings_objects, new Event_Team_Points($team, $money, $points));
 	}
 	if (count($event_winnings_objects) == 0) {
 		echo "\n****Error: No rankings found.  Going to look at playoffs draw*****\n";

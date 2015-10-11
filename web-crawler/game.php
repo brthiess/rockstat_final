@@ -14,7 +14,7 @@ include_once 'curling.php';
 			$this->team1 = $team1;
 			$this->team2 = $team2;
 			$this->linescore = $linescore;
-			$this->hammer = $hammer;
+			$this->hammer = $hammer;	//whether team1 or team2 started with hammer;
 			$this->date = $date;
 		}
 		
@@ -27,6 +27,29 @@ include_once 'curling.php';
 			$this->team2->print_team();			
 			//Debug
 			$this->linescore->print_linescore($this->hammer);
+		}
+		
+		//returns true if the team number (1 or 2 only) has hammer in the given end_number
+		public function get_hammer($team_number, $end_number) {
+			$hammer = $this->hammer;
+			for($i = 1; $i < $end_number; $i++) {				
+				if ($this->linescore->get_end_score($i, 1) - $this->linescore->get_end_score($i, 2) > 0){  //If this is true it means team 1 scored;
+					$hammer = 2;
+				}
+				else if ($this->linescore->get_end_score($i, 1) - $this->linescore->get_end_score($i, 2) < 0) {
+					$hammer = 1;
+				}
+			}
+			if ($team_number == $hammer) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		
+		public function get_end($end_number) {
+			return $this->linescore->get_end($end_number);
 		}
 	}
 ?>
