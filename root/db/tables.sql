@@ -98,7 +98,7 @@ CREATE TABLE end (
 CREATE TABLE game_team (
 	game_id INT NOT NULL,
 	team_id INT NOT NULL,
-	winner BOOLEAN,		
+	winner BIT,		
 	FOREIGN KEY (game_id) REFERENCES game(game_id),
 	FOREIGN KEY (team_id) REFERENCES team(team_id)
 );

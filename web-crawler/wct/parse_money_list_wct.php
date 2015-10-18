@@ -3,7 +3,8 @@
 function get_team_wct($team_string, $teams){
 	$comma_position = stripos($team_string, ",");
 	$last_name = trim(substr($team_string, 0, $comma_position));
-	$team = get_team_from_last_name($last_name, $teams);
+	$first_name = substr($team_string, $comma_position + 1);
+	$team = get_team_from_name($last_name, $first_name, $teams);
 	return $team;
 }
 

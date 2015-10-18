@@ -42,9 +42,12 @@ function pause($string) {
 	$line = fgets($handle);
 }
 
-function get_team_from_last_name($last_name, $teams) {
+function get_team_from_name($last_name, $first_name, $teams) {
 	foreach($teams as $team) {
 		if (last_name_is_skip($last_name, $team)) {
+			return $team;
+		}
+		if (whole_name_is_on_team($last_name, $first_name, $team)) {
 			return $team;
 		}
 	}
@@ -52,15 +55,24 @@ function get_team_from_last_name($last_name, $teams) {
 
 //Returns true if the last name is the skip of the team
 function last_name_is_skip($last_name, $team) {
-	$skip = $team->get_position(4);
-	$vice = $team->get_position(3);
+	$skip = $team->get_player(4);
+	$vice = $team->get_player(3);
 	if (trim($skip->last_name) == trim($last_name) || trim($vice->last_name) == trim($last_name)) {
 		return true;
 	}
 	else {
 		return false;
 	}
-	
+}
+
+function whole_name_is_on_team($last_name, $first_name, $team) {
+	for($i = 1; $i <= 4; $i++) {
+		$player = $team->get_player($i);
+		if (trim($player->last_name) == trim($last_name) && trim($player->first_name) == trim($first_name)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 ?>

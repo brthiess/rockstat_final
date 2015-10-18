@@ -1,6 +1,7 @@
 <?php
 	include_once 'db_connect.php';
 	include_once 'db_conversion.php';
+	include_once 'manage_db.php';
 	
 	
 	function execute_function($stmt) {
@@ -41,7 +42,7 @@
 		
 		$team->team_id = $team_id;
 		echo "\nTeam ID: " . $team_id;
-		//pause("\n\n");
+		pause("\n\n");
 	}
 	
 	//Is given a team and inserts all of the players on the team
@@ -70,7 +71,7 @@
 		
 		$result = $stmt->get_result();
 		$player_id  = $result->fetch_array(MYSQLI_NUM)[0]; // this does work :)
-		//pause("\nPlayer ID Returned: " . $player_id);
+		pause("\nPlayer ID Returned: " . $player_id);
 		$player->player_id = $player_id;
 		
 		return $player_id;
@@ -92,7 +93,7 @@
 		$stmt->execute();
 		$result = $stmt->get_result();
 		$event_id = $result->fetch_array(MYSQLI_NUM)[0];
-		//pause("\nEvent ID Returned: " . $event_id);
+		pause("\nEvent ID Returned: " . $event_id);
 		return $event_id;
 	}
 	
@@ -116,11 +117,16 @@
 	
 	function insert_games($games, $event_id) {		
 		foreach($games as $game) {
-			insert_game($game, $event_id);
-			insert_game_stats($game);
-			insert_linescore($game);
+			if (game_is_not_duplicate($game)) {
+				insert_game($game, $event_id);
+				insert_game_stats($game);
+				insert_linescore($game);
+				insert_game_team($game);
+			}
 		}
 	}
+	
+
 	
 	function insert_game($game, $event_id) {
 		echo "\n\n\n********Inserting Game*******";
@@ -154,6 +160,9 @@
 	}
 	
 	function insert_player_stats($player, $game_id) {
+		if ($player->stats == null) {
+			return;
+		}
 		$conn = db_connect();
 		echo "\n\n\n******Insert Player Stats******** ";
 		$player->print_player();
@@ -174,18 +183,21 @@
 	}
 	
 	function insert_end($end_number, $game) {	
-	
-		insert_end_game($end_number, $game->game_id, $game->get_end($end_number));		
-		
+		$team1_score = $game->get_end($end_number)->team1_score;
+		$team2_score = $game->get_end($end_number)->team2_score;	
+		if ($team1_score == "X" || $team1_score == null) {
+			return;
+		}
+
+		insert_end_game($end_number, $game->game_id, $game->get_end($end_number));	
 		
 		$hammer_team1 = boolean_to_db($game->get_hammer(1, $end_number));
 		$hammer_team2 = boolean_to_db($game->get_hammer(2, $end_number));
 		$differential_team1 = $game->linescore->get_differential($end_number, 1);
 		$differential_team2 = $game->linescore->get_differential($end_number, 2);
-		$team1_score = $game->get_end($end_number)->team1_score;
-		$team2_score = $game->get_end($end_number)->team2_score;
-		$end_id = $game->get_end($end_number)->end_id;
 
+		$end_id = $game->get_end($end_number)->end_id;
+		
 		echo "\n\n\n********Inserting End********";
 		echo "\nEnd Number: " . $end_number;
 		echo "\nEnd ID: " . $end_id;
@@ -228,5 +240,31 @@
 		$end->end_id = $end_id;
 		echo "End ID: " . $end->end_id;
 		$stmt->close();
+	}
+	
+	function insert_game_team($game) {		
+		$winner_team1 = boolean_to_db($game->is_winner(1));
+		$winner_team2 = boolean_to_db($game->is_winner(2));
+		
+		echo "\n\n\n******Inserting game team******";
+		echo "\nTeam 1 Winner: " . $winner_team1;
+		echo "\nGame ID: " . $game->game_id;
+		echo "\nTeam 1 ID: " . $game->team1->team_id;		
+		echo "\nTeam 2 Winner: " . $winner_team2;
+		echo "\nGame ID: " . $game->game_id;
+		echo "\nTeam 2 ID: " . $game->team2->team_id;
+		pause(" ");
+	
+		$conn = db_connect();
+		$stmt = $conn->prepare("SELECT insert_game_team(?, ?, ?)");
+		$stmt->bind_param("iii", $game->game_id, $game->team1->team_id, $winner_team1);
+		$stmt->execute();	
+		$stmt->close();	
+
+		$conn = db_connect();
+		$stmt = $conn->prepare("SELECT insert_game_team(?, ?, ?)");
+		$stmt->bind_param("iii", $game->game_id, $game->team2->team_id, $winner_team2);
+		$stmt->execute();	
+		$stmt->close();			
 	}
 ?>

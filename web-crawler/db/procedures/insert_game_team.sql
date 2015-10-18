@@ -4,19 +4,19 @@ DROP FUNCTION IF EXISTS insert_game_team;
 
 
 CREATE FUNCTION insert_game_team
-(end_id_input INT, team_id_input INT, score_input TINYINT, differential_input TINYINT, hammer_input BIT)
+(game_id_input INT, team_id_input INT, winner_input BIT)
 RETURNS INT NOT DETERMINISTIC
 BEGIN
 
 	IF EXISTS	(SELECT * 
-				 FROM	end
-				 WHERE	end_id	= end_id_input
+				 FROM	game_team
+				 WHERE	game_id	= game_id_input
 				 AND	team_id 	= team_id_input)
 	THEN
 		return -1;
 	ELSE
-		INSERT INTO end (end_id, team_id, score, differential, hammer)
-		VALUES(end_id_input, team_id_input, score_input, differential_input, hammer_input);
+		INSERT INTO game_team (game_id, team_id, winner)
+		VALUES(game_id_input, team_id_input, winner_input);
 	END IF;
   
 	RETURN 1;

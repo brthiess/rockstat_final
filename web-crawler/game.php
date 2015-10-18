@@ -51,5 +51,29 @@ include_once 'curling.php';
 		public function get_end($end_number) {
 			return $this->linescore->get_end($end_number);
 		}
+		
+		//Returns true if the given team number (1 or 2) is a winner
+		public function is_winner($team_number) {
+			if ($this->linescore->get_total(1) > $this->linescore->get_total(2)){
+				if ($team_number == 1) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+			else if ($this->linescore->get_total(2) > $this->linescore->get_total(1)){
+				if ($team_number == 2) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+			else {
+				echo "\n********ERROR:  Tie? in is_winner()******";
+				return false;
+			}
+		}
 	}
 ?>

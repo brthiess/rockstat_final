@@ -12,8 +12,8 @@ $schedule_html = get_html($schedule_url);
 $next_event_url = get_next_event_url($schedule_html, null);	
 
 while($next_event_url != null){
-	//$parsed_event_html = parse_event_html($schedule_html, $next_event_url);
-	$parsed_event_html = fake_event_data();
+	$parsed_event_html = parse_event_html($schedule_html, $next_event_url);
+	//$parsed_event_html = fake_event_data();
 	pause("Press Enter");
 	if ($parsed_event_html != null)		
 		input_html($parsed_event_html);
@@ -53,6 +53,7 @@ function parse_event_html($schedule_html, $event_url){
 
 //Returns the next event URL to visit
 function get_next_event_url($schedule_html, $previous_event_url) {
+	//return "http://www.worldcurl.com/events.php?task=Event&eventid=3805";
 	$urls = $schedule_html->find("a");
 	
 	$found_previous_url = false;

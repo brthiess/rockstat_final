@@ -76,5 +76,20 @@
 		public function get_end($end_number) {
 			return $this->ends[$end_number - 1];
 		}
+		public function get_total($team_number) {
+			$total = 0;
+			foreach($this->ends as $end) {
+				if ($team_number == 1) {
+					$total += $end->team1_score;
+				}
+				else if ($team_number == 2) {
+					$total += $end->team2_score;
+				}
+				else {
+					echo "\n********ERROR: Invalid team number in get_end()******";
+				}
+			}
+			return $total;
+		}
 	}
 ?>

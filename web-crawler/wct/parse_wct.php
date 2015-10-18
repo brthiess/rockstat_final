@@ -22,7 +22,7 @@ function get_event_games_wct($event_url, $event){
 		$html = get_html($draw_url);
 		$page_type = get_page_type_wct($html);
 		if ($page_type == WCT_EVENT_PAGE) {
-			array_merge($game_objects, parse_wct_event_page($html, $event));
+			$game_objects = array_merge($game_objects, parse_wct_event_page($html, $event));
 		}
 		else {
 			if ($page_type == ERROR)
@@ -49,7 +49,7 @@ function get_basic_event_information_wct($schedule_html, $event_url) {
 	$event_teams = get_event_teams_wct($event_url, $event_gender);
 	$event_winnings = get_event_winnings_wct($event_url, $event_teams);
 	$event_format = get_event_format_wct($event_url);
-	$event_FGZ = get_event_FGZ($event->category);
+	$event_FGZ = get_event_FGZ($event_category);
 	
 	$event = new Event($event_location, $start_date, $end_date, $event_purse, $event_currency, $event_name, $event_gender, $event_teams, $event_category, $event_winnings, $event_format, $event_FGZ);
 	$event->print_event();
