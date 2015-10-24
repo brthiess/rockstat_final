@@ -50,6 +50,9 @@ function get_team_from_name($last_name, $first_name, $teams) {
 		if (whole_name_is_on_team($last_name, $first_name, $team)) {
 			return $team;
 		}
+		if (team_name_is_on_team($last_name, $first_name, $team->name)) {
+			return $team;
+		}
 	}
 }
 
@@ -71,6 +74,19 @@ function whole_name_is_on_team($last_name, $first_name, $team) {
 		if (trim($player->last_name) == trim($last_name) && trim($player->first_name) == trim($first_name)) {
 			return true;
 		}
+	}
+	return false;
+}
+
+function team_name_is_on_team ($last_name, $first_name, $team_name) {
+	echo "\nTeam Name" . $team_name;
+	echo "\nLast Name" . $last_name;
+	echo "\nFirst Name" . $first_name;
+	if (stripos($first_name ,$team_name) !== false || stripos($team_name, $first_name) !== false) {
+		return true;
+	}
+	if (stripos($last_name ,$team_name) !== false || stripos($team_name, $last_name) !== false) {
+		return true;
 	}
 	return false;
 }

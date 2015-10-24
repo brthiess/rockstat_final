@@ -75,5 +75,14 @@ include_once 'curling.php';
 				return false;
 			}
 		}
+		
+		public function is_tie() {
+			if ($this->linescore->get_total(1) == $this->linescore->get_total(2)){
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 	}
 ?>

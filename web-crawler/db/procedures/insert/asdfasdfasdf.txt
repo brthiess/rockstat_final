@@ -1,0 +1,1 @@
+select insert_event('Brad Thiessen Classic', 'WCT', 8, 4, 'Triple Knockout', 'Edmonton', 'Alberta', '2015-08-20', '2015-09-20', 5000, 'CDN', 1)

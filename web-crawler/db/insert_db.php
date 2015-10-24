@@ -58,6 +58,11 @@
 		$gender = gender_to_db($player->gender);
 		
 		$conn = db_connect();
+
+		if (strlen(trim($player->first_name)) == 0 && strlen(trim($player->last_name)) == 0) {
+			$player->first_name = "_U" . rand(1,99999);
+			$player->last_name = "_U" . rand(1,99999);
+		}
 		
 		$player_id = -1;
 		echo "Insert Player Name: " . $player->first_name . " " .  $player->last_name . "\nGender: " . $gender;
@@ -117,7 +122,7 @@
 	
 	function insert_games($games, $event_id) {		
 		foreach($games as $game) {
-			if (game_is_not_duplicate($game)) {
+			if (game_is_not_duplicate($game, $event_id)) {
 				insert_game($game, $event_id);
 				insert_game_stats($game);
 				insert_linescore($game);

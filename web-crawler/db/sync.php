@@ -15,6 +15,7 @@
 	}
 	
 	function update_id($team, $event_teams){
+		$found_team = false;
 		foreach($event_teams as $event_team) {
 			echo "\n\n******Comparing Teams*******\n";
 			$event_team->print_team();
@@ -23,12 +24,17 @@
 			if (teams_match($team, $event_team)) {		
 				echo "\nTeams Match";
 				$team->team_id = $event_team->team_id;
+				$found_team = true;
 				break;
 			}
 			else {
 				echo "\nTeams Don't Match";
 			}
 			//pause(" ");	
+		}
+		if (!$found_team) {
+			echo "\n\n***ERROR: No Match for team***";
+			pause("");
 		}
 	}
 	

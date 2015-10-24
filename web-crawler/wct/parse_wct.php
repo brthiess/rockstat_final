@@ -78,10 +78,21 @@ function parse_wct_event_page($html, $event) {
 		$new_game = new Game($team1, $team2, $linescore, $hammer, $draw_time);
 		$new_game->print_game();
 
-		//Push a new game onto the game_objects array
-		array_push($game_objects, $new_game);
+		//Push a new game onto the game_objects array if it's not broken
+		if (!game_is_broken($new_game)) {
+			array_push($game_objects, $new_game);
+		}
 	}
 	return $game_objects;
+}
+
+function game_is_broken($game) {
+	//If the game is a tie, it's broken
+	if ($game->is_tie()) {
+		echo "\n\n****ERROR: Broken Game.  Tie! in game_is_broken()";
+		return true;
+	}
+	return false;
 }
 
 //Check to see if the page has curling scores on it.
@@ -156,7 +167,7 @@ function get_page_type_wct($html){
 function get_hammer_wct($game) {
 	$hammer = $game->find(".linescorehammer");
 	//Check if the upper linescore team has hammer
-	if (strpos($hammer[0]->plaintext, 'hammer.gif') !== false) {
+	if (strpos($hammer[0]->innertext, 'hammer.gif') !== false) {
 		return 1;
 	}
 	else {

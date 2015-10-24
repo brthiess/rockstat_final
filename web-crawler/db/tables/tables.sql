@@ -35,33 +35,36 @@ CREATE TABLE player_team (
 
 
 CREATE TABLE event (
-	event_id INT NOT NULL PRIMARY KEY,
-	name VARCHAR(50),
+	event_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(500),
 	type VARCHAR(25),
+	number_of_qualifiers TINYINT,
 	fgz INT,
 	category VARCHAR(30),
-	location VARCHAR(50),
+	city VARCHAR(50),
+	province VARCHAR(50),
 	start_date DATE,
 	end_date DATE,
 	purse INT,
+	currency VARCHAR(10),
 	gender TINYINT(1)
 );
 
 CREATE TABLE event_team (
 	team_id INT NOT NULL,
 	event_id INT NOT NULL,
-	event_rank INT,
 	amount_won INT,
 	points_won FLOAT,
 	FOREIGN KEY (team_id) REFERENCES team(team_id),
-	FOREIGN KEY (event_id) REFERENCES event(event_id)
+	FOREIGN KEY (event_id) REFERENCES event(event_id),
+	CONSTRAINT unique_event_team UNIQUE(team_id, event_id)
 );
 
 CREATE TABLE game (
-	game_id INT NOT NULL PRIMARY KEY,
+	game_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	event_id INT NOT NULL,
 	FOREIGN KEY (event_id) REFERENCES event(event_id),
-	date DATE
+	date DATETIME
 );
 
 CREATE TABLE player_game (
@@ -75,8 +78,8 @@ CREATE TABLE player_game (
 );
 
 CREATE TABLE end_game (
-	end_id INT NOT NULL PRIMARY KEY,
-	end_number TINYINT(1),
+	end_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	end_number TINYINT(2),
 	game_id INT NOT NULL,
 	FOREIGN KEY (game_id) REFERENCES game(game_id)
 );
@@ -86,7 +89,7 @@ CREATE TABLE end (
 	team_id INT NOT NULL,
 	score TINYINT,
 	differential TINYINT,	
-	hammer BOOLEAN,			
+	hammer BIT,			
 	PRIMARY KEY(end_id, team_id),
 	FOREIGN KEY (end_id) REFERENCES end_game(end_id),
 	FOREIGN KEY (team_id) REFERENCES team(team_id)
@@ -95,7 +98,7 @@ CREATE TABLE end (
 CREATE TABLE game_team (
 	game_id INT NOT NULL,
 	team_id INT NOT NULL,
-	winner BOOLEAN,		
+	winner BIT,		
 	FOREIGN KEY (game_id) REFERENCES game(game_id),
 	FOREIGN KEY (team_id) REFERENCES team(team_id)
 );

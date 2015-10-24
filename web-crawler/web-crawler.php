@@ -6,7 +6,7 @@ include_once "db/input.php";
 include_once "fake_data.php";
 
 // Create DOM from URL or file
-$schedule_url = 'http://www.worldcurl.com/schedule.php?eventtypeid=21';
+$schedule_url = 'http://www.worldcurl.com/schedule.php?eventtypeid=21&eventyear=2010';
 $schedule_html = get_html($schedule_url);
 
 $next_event_url = get_next_event_url($schedule_html, null);	
@@ -18,6 +18,7 @@ while($next_event_url != null){
 	if ($parsed_event_html != null)		
 		input_html($parsed_event_html);
 	$next_event_url = get_next_event_url($schedule_html, $next_event_url);	
+	echo "\n\n\n\n***Moving on to new event***";
 }
 
 //Gets the html dom object from the given url
