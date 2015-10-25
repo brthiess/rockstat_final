@@ -119,10 +119,12 @@ function get_event_location_wct($schedule_html, $event_url) {
 	$province = substr($location_string, $comma_position + 1);
 	
 	if (strlen($city) <= 2) {
-		echo "\nCity string length less than 2";
+		echo "\n\n***ERROR: City string length less than 2";
+		pause("");
 	}
 	if (strlen($province) <=2) {
-		echo "\nProvince string length less than 2";
+		echo "\n\n***ERROR: Province string length less than 2";
+		pause("");
 	}
 	return new Location($city, $province);
 }
@@ -134,7 +136,8 @@ function get_event_purse_wct($schedule_html, $event_url) {
 	$purse = -1;
 	$purse = intval(preg_replace("/[^0-9]/","",$purse_string));
 	if ($purse == -1) {
-		echo "Purse is $-1";
+		echo "\n\n***ERROR: Purse is $-1";
+		pause("");
 	}
 	return $purse;
 }

@@ -20,7 +20,7 @@
 		//Insert Event Rankings for each team. 
 		insert_rankings($event->ranking_list, $event->event_id);
 		//For each game
-		echo "Count of Games: " . count($event->games);
+		echo "\n\nCount of Games: " . count($event->games);
 		insert_games($event->games, $event->event_id);
 			//Insert  game with the dates and event_id.  Get game id
 			//For each player

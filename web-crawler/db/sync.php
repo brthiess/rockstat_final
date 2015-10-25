@@ -17,18 +17,18 @@
 	function update_id($team, $event_teams){
 		$found_team = false;
 		foreach($event_teams as $event_team) {
-			echo "\n\n******Comparing Teams*******\n";
+			//echo "\n\n******Comparing Teams*******\n";
 			$event_team->print_team();
 			$team->print_team();
-			echo "\nTeam ID: " . $event_team->team_id;		
+			//echo "\nTeam ID: " . $event_team->team_id;		
 			if (teams_match($team, $event_team)) {		
-				echo "\nTeams Match";
+				//echo "\nTeams Match";
 				$team->team_id = $event_team->team_id;
 				$found_team = true;
 				break;
 			}
 			else {
-				echo "\nTeams Don't Match";
+				//echo "\nTeams Don't Match";
 			}
 			//pause(" ");	
 		}
@@ -39,7 +39,7 @@
 	}
 	
 	function teams_match($team, $event_team) {
-		echo "\nChecking if Teams Match...";
+		//echo "\nChecking if Teams Match...";
 		//pause(" ");
 		$players_matching = 0;
 		$skip_matches = false;
@@ -59,7 +59,7 @@
 			return true;
 		}
 		if ($skip_matches) {
-			echo "\n\n***Warning: Only Skip Matches***\n\n";
+			//echo "\n\n***Warning: Only Skip Matches***\n\n";
 			return false;
 		}
 		return false;
@@ -75,17 +75,17 @@
 	}
 	
 	function player_matches($player1, $player2) {
-		echo "\nPlayer 1: " . $player1->first_name . " " . $player1->last_name;
-		echo "\nPlayer 2: " . $player2->first_name . " " . $player2->last_name;
+		//echo "\nPlayer 1: " . $player1->first_name . " " . $player1->last_name;
+		//echo "\nPlayer 2: " . $player2->first_name . " " . $player2->last_name;
 		if (stripos($player1->first_name, $player2->first_name) !== false || stripos($player2->first_name, $player1->first_name) !== false) {
 			if (stripos($player1->last_name, $player2->last_name) !== false || stripos($player2->last_name, $player1->last_name) !== false) {
 				$player1->player_id = $player2->player_id;
-				echo "\nPlayers Match";
+				//echo "\nPlayers Match";
 				//pause(" ");
 				return true;
 			}
 		}
-		echo "\nPlayers Don't Match";
+		//echo "\nPlayers Don't Match";
 		//pause(" ");
 		return false;			
 	}

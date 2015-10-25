@@ -1,20 +1,27 @@
-$(document).ready(function() {
-	console.log("hello");
-	
-	$('#search-input').autoComplete({
-		minChars: 2,
-		source: function(term, suggest){
-			term = term.toLowerCase();
-			var choices = ['ActionScript', 'AppleScript', 'Asp', 'actionblah'];
-			var matches = [];
-			for (i=0; i<choices.length; i++)
-				if (~choices[i].toLowerCase().indexOf(term)) matches.push(choices[i]);
-			suggest(matches);
-		}
-	});
+$(document).ready(function() {	
+	 $( "#search-input" ).autoComplete({
+      source: function( request, response ) {
+		  console.log(request);
+        $.ajax({
+          url: "/includes/get_autocomplete_results.php",
+          dataType: "jsonp",
+          data: {
+            q: request
+          },
+          success: function( data ) {
+			handleData(data);
+          }
+        });
+      },
+      minLength: 2,
+    });
 });
 function loadAutocomplete() {
 
+}
+
+function handleData(data){
+	console.log(data);
 }
 
 function getSuggestions(value){

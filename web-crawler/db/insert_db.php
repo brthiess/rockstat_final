@@ -42,7 +42,7 @@
 		
 		$team->team_id = $team_id;
 		echo "\nTeam ID: " . $team_id;
-		pause("\n\n");
+		//pause("\n\n");
 	}
 	
 	//Is given a team and inserts all of the players on the team
@@ -76,7 +76,7 @@
 		
 		$result = $stmt->get_result();
 		$player_id  = $result->fetch_array(MYSQLI_NUM)[0]; // this does work :)
-		pause("\nPlayer ID Returned: " . $player_id);
+		//pause("\nPlayer ID Returned: " . $player_id);
 		$player->player_id = $player_id;
 		
 		return $player_id;
@@ -94,11 +94,11 @@
 		
 		$conn = db_connect();
 		$stmt = $conn->prepare("SELECT insert_event(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		$stmt->bind_param("ssiisssssiii", $event->name, $event->format->type, $event->number_of_qualifiers, $event->FGZ, $event->category, $event->location->city, $event->location->province, $start_date, $end_date, $event->purse, $event->currency, $event->gender);
+		$stmt->bind_param("ssiisssssisi", $event->name, $event->format->type, $event->format->number_of_qualifiers, $event->FGZ, $event->category, $event->location->city, $event->location->province, $start_date, $end_date, $event->purse, $event->currency, $event->gender);
 		$stmt->execute();
 		$result = $stmt->get_result();
 		$event_id = $result->fetch_array(MYSQLI_NUM)[0];
-		pause("\nEvent ID Returned: " . $event_id);
+		//pause("\nEvent ID Returned: " . $event_id);
 		return $event_id;
 	}
 	
@@ -110,7 +110,7 @@
 			echo "\nTeam ID: " . $ranking->team->team_id;
 			echo "\nEvent ID: " . $event_id;
 			
-			echo "Inserting Ranking";
+			echo "\nInserting Ranking";
 			
 			
 			$stmt = $conn->prepare("SELECT insert_rankings(?, ?, ?, ?)");
@@ -139,7 +139,7 @@
 		$game->print_game();
 		$game_date =  $game->date->format("Y-m-d H:i:s");
 		echo "\nDate: " . $game_date;
-		pause(" ");
+		//pause(" ");
 		
 		$stmt = $conn->prepare("SELECT insert_game(?, ?)");
 		$stmt->bind_param("is", $event_id, $game_date);
@@ -171,7 +171,7 @@
 		$conn = db_connect();
 		echo "\n\n\n******Insert Player Stats******** ";
 		$player->print_player();
-		pause(" ");
+		//pause(" ");
 		$stmt = $conn->prepare("SELECT insert_player_stats(?, ?, ?, ?)");
 		$stmt->bind_param("iidi", $player->player_id, $game_id, $player->stats->percentage, $player->stats->number_of_shots);
 		$stmt->execute();
@@ -215,7 +215,7 @@
 		echo "\nHammer Team 1: " . $hammer_team1;
 		echo "\nHammer Team 2: " . $hammer_team2;
 
-		pause(" ");
+		//pause(" ");
 		
 		$conn = db_connect();
 		$stmt = $conn->prepare("SELECT insert_end(?, ?, ?, ?, ?)");
@@ -236,7 +236,7 @@
 		echo "\n\n\n******Insert End Game******* ";
 		echo "\nEnd Number: " . $end_number;
 		echo "\nGame ID: " . $game_id;
-		pause(" ");
+		//pause(" ");
 		$stmt = $conn->prepare("SELECT insert_end_game(?, ?)");
 		$stmt->bind_param("ii", $end_number, $game_id);
 		$stmt->execute();
@@ -258,7 +258,7 @@
 		echo "\nTeam 2 Winner: " . $winner_team2;
 		echo "\nGame ID: " . $game->game_id;
 		echo "\nTeam 2 ID: " . $game->team2->team_id;
-		pause(" ");
+		//pause(" ");
 	
 		$conn = db_connect();
 		$stmt = $conn->prepare("SELECT insert_game_team(?, ?, ?)");

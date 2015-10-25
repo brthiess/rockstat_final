@@ -27,6 +27,7 @@ function get_event_games_wct($event_url, $event){
 		else {
 			if ($page_type == ERROR)
 				echo "\n*****ERROR: Can't Determine Page Type****";	
+				pause("");
 		}
 	}
 	return $game_objects;
@@ -38,6 +39,7 @@ function get_basic_event_information_wct($schedule_html, $event_url) {
 	$event_gender = get_gender_wct($schedule_html);
 	if ($event_gender == -1) {
 		echo "\nNo Gender Found.  Error";
+		pause("");
 	}
 	$event_category = get_event_category_wct($schedule_html, $event_url);
 	$event_name = get_event_name_wct($schedule_html, $event_url);
@@ -61,7 +63,7 @@ function get_basic_event_information_wct($schedule_html, $event_url) {
 function parse_wct_event_page($html, $event) {
 	//First check to make sure we are on a page that has scores on it.  If not, return null
 	if (!wct_page_has_scores_on_it($html)) {
-		echo "\nERROR: Page has no scores";
+		echo "\n***ERROR: Page has no scores***";
 		return array();
 	}
 	$game_objects = array();	
@@ -90,6 +92,7 @@ function game_is_broken($game) {
 	//If the game is a tie, it's broken
 	if ($game->is_tie()) {
 		echo "\n\n****ERROR: Broken Game.  Tie! in game_is_broken()";
+		pause("");
 		return true;
 	}
 	return false;
@@ -182,7 +185,8 @@ function get_linescore_wct($game){
 	
 	//Common sense check.  If game has 2 or less ends something is wrong.
 	if ($number_of_ends <=2) {
-		echo 'Found a game with <= 2 ends';
+		echo "\n****ERROR: Found a game with <= 2 ends***\n";
+		pause("");
 	}
 	for($i = 0; $i < $number_of_ends; $i++){
 		$linescore->addEnd(str_replace("&nbsp;", "", $ends[$i]->plaintext), str_replace("&nbsp;", "", $ends[$i + $number_of_ends]->plaintext));
@@ -196,13 +200,15 @@ function get_event_wct($html) {
 	$event_name = $html->find(".wctlight")[0]->plaintext;
 	//Common Sense check
 	if (strlen($event_name) <= 3) {
-		echo 'Short Event name found';
+		echo "\n\n*****ERROR: Short Event name found\n";
+		pause("");
 	}
 	
 	$event_location = $html->find(".wctlight")[1]->plaintext;
 	//Common Sense check
 	if (strlen($event_location) <= 3) {
-		echo 'Short Event location found';
+		echo "\n\n****ERROR: Short Event location found*****\n\n";
+		pause("");
 	}
 	//Get the event date
 	$event_date_html = str_replace("&nbsp;", "", $html->find(".wctlight")[3]->plaintext);

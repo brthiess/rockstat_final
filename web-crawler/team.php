@@ -28,7 +28,7 @@
 					$players = $this->get_players_at_position($i);
 					$this->switch_positions($players);
 					$this->print_team();
-					pause("");
+					//pause("");
 				}
 			}
 		}
@@ -64,7 +64,7 @@
 				}
 			}
 			echo "\n\n****ERROR: No suitable position found. in get_best_position in team.php****\n";
-			pause("");
+			//pause("");
 			return 1;
 		}
 		

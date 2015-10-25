@@ -79,9 +79,6 @@ function whole_name_is_on_team($last_name, $first_name, $team) {
 }
 
 function team_name_is_on_team ($last_name, $first_name, $team_name) {
-	echo "\nTeam Name" . $team_name;
-	echo "\nLast Name" . $last_name;
-	echo "\nFirst Name" . $first_name;
 	if (stripos($first_name ,$team_name) !== false || stripos($team_name, $first_name) !== false) {
 		return true;
 	}
