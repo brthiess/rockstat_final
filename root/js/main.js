@@ -1,32 +1,30 @@
 $(document).ready(function() {	
 	 $( "#search-input" ).autoComplete({
-      source: function( request, response ) {
-		  console.log(request);
+      source: function( search_term, suggest) {
         $.ajax({
           url: "/includes/get_autocomplete_results.php",
           dataType: "jsonp",
           data: {
-            q: request
+            search: search_term
           },
           success: function( data ) {
-			handleData(data);
-          }
+			  var names = get_team_names(data);
+			  suggest(names);
+          },
+		  error: function(data){
+			  console.log("ERROR");
+				console.log(data)
+		  }
         });
       },
-      minLength: 2,
+      minChars: 2,
     });
 });
-function loadAutocomplete() {
 
-}
-
-function handleData(data){
-	console.log(data);
-}
-
-function getSuggestions(value){
-	if (value.length != 0)
-		return ["Jennifer Jones", "Kevin Martin"];
-	else 
-		return [];
+function get_team_names(data) {
+	team_names = [];
+	for (var i = 0; i < data.length; i++) {
+		team_names.push(data[i].team_name);
+	}
+	return team_names;
 }
