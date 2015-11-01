@@ -158,8 +158,7 @@ function get_event_teams_wct($event_url, $gender) {
 
 	$team_objects = array();
 	for ($i = 0; $i < count($team_names); $i++){
-		$team = new Team($team_names[$i]->plaintext);
-		
+		$team = new Team($team_names[$i]->plaintext, $team_names[$i]->plaintext);
 
 		for ($k = 4; $k >= 1; $k--) {
 			$first_name = explode("<br>", $player_names[$i * 4 + 4 - $k]->innertext)[0];

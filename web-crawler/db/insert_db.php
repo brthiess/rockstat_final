@@ -30,12 +30,13 @@
 		$team_id = -1;
 		
 		$conn = db_connect();
-		$stmt = $conn->prepare("SELECT insert_team(?,?,?,?,?)");
-		$stmt->bind_param("iiiii", $team->get_player(1)->player_id, 
+		$stmt = $conn->prepare("SELECT insert_team(?,?,?,?,?,?)");
+		$stmt->bind_param("iiiiis", $team->get_player(1)->player_id, 
 									$team->get_player(2)->player_id, 
 									$team->get_player(3)->player_id, 
 									$team->get_player(4)->player_id,
-									$gender);
+									$gender,
+									$team->location);
 		$stmt->execute();		
 		$result = $stmt->get_result();
 		$team_id = $result->fetch_array(MYSQLI_NUM)[0]; // this does work :)

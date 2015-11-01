@@ -2,8 +2,8 @@ DELIMITER //
 DROP FUNCTION IF EXISTS insert_team;
 
 CREATE FUNCTION insert_team
-(lead_id INT, second_id INT, third_id INT, skip_id INT, gender INT)
-RETURNS INT DETERMINISTIC
+(lead_id INT, second_id INT, third_id INT, skip_id INT, gender_input INT, location_input VARCHAR(30))
+RETURNS INT NOT DETERMINISTIC
 BEGIN
   
 	DECLARE 	team_id_var		INT DEFAULT -1;
@@ -29,7 +29,7 @@ BEGIN
 		SELECT 	last_name INTO team_name	
 		FROM	player
 		WHERE	player_id = skip_id;
-		INSERT 	INTO team (gender, team_name) VALUES (gender, team_name);
+		INSERT 	INTO team (gender, location, team_name) VALUES (gender_input, location_input, team_name);
 		SET 	team_id_var = LAST_INSERT_ID();
 		INSERT 	INTO player_team (player_id, team_id, position) VALUES (lead_id, team_id_var, 1);
 		INSERT 	INTO player_team (player_id, team_id, position) VALUES (second_id, team_id_var, 2);

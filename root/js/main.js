@@ -24,7 +24,7 @@ $(document).ready(function() {
 function get_team_names(data) {
 	team_names = [];
 	for (var i = 0; i < data.length; i++) {
-		team_names.push(data[i].team_name);
+		team_names.push(data[i].name);
 	}
 	return team_names;
 }

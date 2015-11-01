@@ -21,6 +21,7 @@ CREATE TABLE player (
 CREATE TABLE team (
 	team_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	gender TINYINT(1),
+	location varchar(30),	
 	team_name varchar(30)
 );
 

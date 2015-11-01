@@ -225,12 +225,12 @@ Search Items
     box-shadow: 1px 1px 1px #ccc;
 	transition:box-shadow 0.2s;
     margin: auto;
-	width: 600px;
+	width: 650px;
     text-align: left;
     text-indent: 30px;
     padding: 0px;
     color: #666;
-    height: 100px;
+    height: 130px;
 	margin-top:20px;
 }
 
@@ -242,30 +242,44 @@ Search Items
 .search-type-img {
     position: absolute;
 	left: 0;
-    height: 100%;
-	width:150px;
     display: inline-block;
+	height: 100%
 }	
 
 .search-type-img img {
     position: absolute;
 	left: 0;
-    height: 100px;
+    height: 100%;
 }
 
-.search-description {
+.search-name {
     position: absolute;
     color: #666;
     font-size: 60px;
     top: 20px;
-    left: 80px;
+    left: 120px;
+}
+
+.search-description {
+	position:absolute;
+	bottom: 5px;
+	left: 120px;
 }
 
 .search-type {
 	position: absolute;
-	left:100px;
+	left:140px;
 	font-size:30px;
 	color: #2980b9;
+}
+
+.search-item p {
+	display:inline-block;
+	text-indent: 0;
+}
+
+.divider {
+	color: #ccc;
 }
 
 /*Mobile*/
