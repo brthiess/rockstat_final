@@ -14,5 +14,22 @@
 	<?php
 	}
 	
+	//Returns the description of the given search item
+	function get_description($id=null, $type=null) {
+		$description = "";
+		if ($type == "Team") {
+			if ($id != null){
+				$players = \search\get_players_by_team_id($id);
+				foreach($players as $player) {
+					$description .= "<p>" . $player['first_name'] . " " . $player['last_name'];
+					if ($player !== end($players)){
+						$description .= '<p class="divider">|</p>';
+					}
+				}
+			}
+		}
+		return $description;
+	}
+	
 	?>
 	

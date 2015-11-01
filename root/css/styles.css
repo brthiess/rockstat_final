@@ -225,7 +225,7 @@ Search Items
     box-shadow: 1px 1px 1px #ccc;
 	transition:box-shadow 0.2s;
     margin: auto;
-	width: 650px;
+	width: 700px;
     text-align: left;
     text-indent: 30px;
     padding: 0px;
@@ -280,6 +280,7 @@ Search Items
 
 .divider {
 	color: #ccc;
+	padding: 5px;
 }
 
 /*Mobile*/
