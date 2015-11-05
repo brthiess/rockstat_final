@@ -210,11 +210,12 @@ Search Items
 
 #search-results-number {
     margin: auto;
-    width: 500px;
     color: #777;
     font-size: 16px;
     margin-top: 20px;
     font-weight: bold;
+	text-align: center;
+	width: 80%;
 }
 
 .search-item {
@@ -285,6 +286,9 @@ Search Items
 
 /*Mobile*/
 @media(max-width:500px) {
+	/*
+	Landing Page
+	*/
 	#search-container {
 		top: 13%;
 		left: 5%;
@@ -329,6 +333,44 @@ Search Items
 	}
 	.footer-about {
 		left: 5%;
+	}
+	
+	/*
+	Search Page
+	*/
+	#banner-logo {
+		background: url(/images/logo-no-text.png);
+		top: 10px;
+		margin-left: 10px;
+		width: 20%;
+		background-size: contain;
+		background-repeat: no-repeat;
+	}
+	#banner-search-container {
+		width: 70%;
+		float:right;
+		margin-right: 10px;
+	}
+	
+	.search-item {
+		width: 95%;
+	}
+
+	.search-type {
+		font-size: 25px;
+		left: 14%;
+	}
+	.search-description{
+		font-size: 13px;
+		left: 1%;
+		text-indent: 0;
+	}
+	.search-name {
+		font-size: 35px;
+		left: 13%;
+	}
+	.search-type-img {
+		height: 50%;
 	}
 	
 }
