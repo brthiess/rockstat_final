@@ -14,6 +14,7 @@ CREATE TABLE player (
 	player_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	first_name varchar(25),
 	last_name varchar(25),
+	FULLTEXT(first_name, last_name),
 	gender TINYINT(1),
 	CONSTRAINT unique_name UNIQUE(first_name, last_name)
 );
