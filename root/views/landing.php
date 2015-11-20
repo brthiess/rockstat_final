@@ -1,4 +1,3 @@
-<body>
 <div id="landing-container">
 	<div id="search-container">
 		<div class="logo-container">
@@ -16,4 +15,3 @@
 	</div>
 
 </div>
-</body>

@@ -11,9 +11,10 @@ include_once 'db_connect.php';
 
 
 	function get_search_results($search_term) {
-		$teams = get_matching_teams($search_term);
-		$players = get_matching_players($search_term);
-		return $teams;
+		$search_results = array();
+		$search_results = array_merge(get_matching_teams($search_term), $search_results);
+		$search_results = array_merge(get_matching_players($search_term), $search_results);
+		return $search_results;
 	}
 	
 	//Returns 2D array.  Each sub array has following keys
@@ -46,7 +47,7 @@ include_once 'db_connect.php';
 		$rows = $result->fetch_all(MYSQLI_ASSOC);
 		$players = array();
 		foreach($rows as $row) {
-			array_push($players, array('id' => $row['player_id'], 'type' => 'Team', 'name' => $row['first_name'] + ' ' + $row['last_name'], 'image' => $row['gender']));
+			array_push($players, array('id' => $row['player_id'], 'type' => 'Player', 'name' => $row['first_name'] . ' ' . $row['last_name'], 'image' => 'player'));
 		}
 		return $players;
 	}

@@ -1,5 +1,5 @@
 <?php
-	function output_search_item($type, $name, $image, $description) {
+	function output_search_item($id, $type, $name, $image, $description) {
 	?>
 		<div class="search-item">
 			<div class="search-type-img">
@@ -10,6 +10,7 @@
 			</div>
 			<div class="search-name"><?php echo $name?></div>
 			<div class="search-description"><?php echo $description?></div>
+			<a href="/?<?php echo strtolower($type);?>=<?php echo $id;?>"></a>
 		</div>
 	<?php
 	}
