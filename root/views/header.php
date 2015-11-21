@@ -5,5 +5,5 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="js/jquery.auto-complete.min.js"></script>
 <script src="/js/main.js"></script>
-
+<link href='https://fonts.googleapis.com/css?family=Merriweather+Sans' rel='stylesheet' type='text/css'>
 </head>
