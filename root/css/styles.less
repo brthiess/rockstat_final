@@ -1,18 +1,23 @@
 /*------Views------*/
 @smartphones: ~"only screen and (max-width: 479px)";
+@mini-tablets: ~"only screen and (min-width: 479px) and (max-width: 768px)";
 @tablets: ~"only screen and (min-width: 768px) and (max-width: 959px)";
 @desktop: ~"only screen and (min-width: 959px)";
 
 /*------Colors------*/
-@red: #C0392b;
+@red: #FF5A5E;
 @darkBlue: #067EFB;
 @blue: #45A1FF;
+@lightBlue: #5AD3D1;
 @nearlyWhite: #f7f7f7;
 @veryLightGray: #E0E0E0;
 @lightGray: #cccccc;
 @gray: #696969;
 @darkGray: #666666; 
 
+
+/*----------Fonts--------------*/
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
 
 * {
 margin: 0;
@@ -23,7 +28,7 @@ html {
 }
 body {
 	height: 100%;
-	font-family: 'Merriweather Sans', "Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;
+	font-family: 'Montserrat', "Segoe UI" ,Segoe,Tahoma,Arial,Verdana,sans-serif;
 	background-color:@nearlyWhite;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -102,7 +107,8 @@ Landing Page
 
 #search-input-container {
     position: relative;
-    width: 550px;
+    max-width: 550px;
+	width: 95%;
     margin: auto auto;	
 }
 
@@ -170,66 +176,74 @@ Banner
 
 
 #banner {
+	position: relative;
 	background: white;
 	width: 100%;
 	height: 80px;
+	#banner-search-container{
+		position:relative;
+		top: 18px;
+		max-width:500px;
+		width: 80%;
+		height: 50%;
+		margin: auto;
+		background: @nearlyWhite;
+		border: 1px solid #ddd;
+		@media @smartphones, @mini-tablets {
+			float: right;
+			margin-right: 5px;
+		}
+		#search-input-banner {
+			position: absolute;
+			background: none;
+			outline: none;
+			border: none;
+			height: 100%;
+			width: 90%;
+			font-size: 18px;
+			color: @darkGray;
+			padding-left: 10px;
+		}
+		#search-button-banner {
+			position: absolute;
+			right: 0%;
+			height: 100%;
+			background: url(/images/search-icon-thin.png);
+			background-size: 21px 21px;
+			background-position: 10px;
+			background-repeat: no-repeat;
+			outline: none;
+			border: none;
+			width: 40px;
+			height: 40px;
+			cursor: pointer;
+		}
+	}
+	#banner-logo {
+		position: absolute;	
+		max-width: 200px;
+		padding: 20px;
+		box-sizing: border-box;				
+		width: 20%;
+		height: 100%;
+		a {
+			width: 100%;
+			height: 100%;
+			display: table;
+			background-image: url(/images/logo-2.png);
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			@media @smartphones, @mini-tablets {
+				padding: 5%;
+				background-image: url(/images/favicon.png);
+			}
+		}
+	}
 }
 
 
-#banner-search-container{
-	position:relative;
-	top: 18px;
-	max-width:500px;
-	width: 90%;
-	height: 50%;
-	margin: auto;
-	background: @nearlyWhite;
-	border: 1px solid #ddd;
-}
 
-#search-input-banner {
-position: absolute;
-    background: none;
-    outline: none;
-    border: none;
-    height: 100%;
-    width: 90%;
-    font-size: 18px;
-    color: @darkGray;
-    padding-left: 10px;
-}
-
-#search-button-banner {
-    position: absolute;
-    right: 0%;
-    height: 100%;
-    background: url(/images/search-icon-thin.png);
-    background-size: 21px 21px;
-    background-position: 10px;
-    background-repeat: no-repeat;
-    outline: none;
-    border: none;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-}
-
-#banner-logo {
-    position: absolute;
-    background: url(/images/logo2-gray4.png);
-    width: 200px;
-    height: 60px;
-    left: 1%;
-    top: 20px;
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-
-#banner-logo a {
-    width: 100%;
-    height: 100%;
-    display: table;
-}
 
 
 
@@ -254,7 +268,8 @@ Search Items
     box-shadow: 1px 1px 1px #ccc;
 	transition:box-shadow 0.2s;
     margin: auto;
-	width: 700px;
+	max-width: 700px;
+	width: 95%;
     text-align: left;
     text-indent: 30px;
     padding: 0px;
@@ -325,10 +340,11 @@ Stats Page
 
 .section {
 	cursor: default;
+	box-sizing: border-box;
 	background: white;
 	box-shadow: 3px 3px 3px #aaa;
 	margin: 20px auto;
-	padding: 20px;
+	padding: 20px;	
 	max-width: 500px;
 	width: 95%;
 	color: #333; 
@@ -340,13 +356,46 @@ Stats Page
 	.section-subtitle {
 		color: #2980b9;
 		margin-top: 20px;
+		font-size: 18px;
 	}
 	.subsection {
-		border-top: 1px solid #ccc;
-		&>span {
+		border-top: 1px solid #ccc;		
+		&>.sub-fact {
+			position: relative;
 		    width: 50%;
 			display: inline-block;
-			height: 200px;
+			height: 100%;
+			padding-top: 20px;
+			height: 150px;
+			@media @smartphones {
+				width: 100%;
+			}			
+			&>span {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				text-align: center;
+			}
+		}
+		.graph {
+			canvas {
+				max-width: 100%;
+			}
+			.legend {
+				font-size: 14px;
+				.wins {
+					color: @lightBlue;
+				}
+				.losses {
+					color: @red
+				}
+				.number {
+					font-size: 20px;
+				}
+			}
+		}
+		.number {
+			padding: 0px;
 		}
 	}
 	.section-rank-item {
@@ -432,22 +481,6 @@ Stats Page
 	}
 	.footer-about {
 		left: 5%;
-	}
-	
-	/*
-	Search Page
-	*/
-	#banner-logo {
-		background: url(/images/logo-no-text.png);
-		top: 10px;
-		margin-left: 10px;
-		width: 20%;
-		background-size: contain;
-		background-repeat: no-repeat;
-	}
-	#banner-search-container {
-		float:right;
-		margin-right: 10px;
 	}
 	
 	.search-item {

@@ -8,7 +8,6 @@
 <script src="js/jquery-1.11.3.min.js"></script>
 <script src="js/jquery.auto-complete.min.js" async></script>
 <script src="/js/main.js" async></script>
-<link href='https://fonts.googleapis.com/css?family=Merriweather+Sans' rel='stylesheet' type='text/css'>
 <?php
 	foreach($additional_resources as $resource) {
 		echo $resource;

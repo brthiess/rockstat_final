@@ -1,4 +1,8 @@
+//Global Charts Array
+var charts = new Array();
+
 $(document).ready(function() {
+
 	$(".suffix").prev().on("numberChanged", function(event, new_number) {		
 		$(this).next().text(get_suffix(new_number));	
 	});
@@ -6,7 +10,6 @@ $(document).ready(function() {
 		var group = $(this).closest(".section").attr("data-group");	//Get the group the button was clicked in.  (Games, Player Percentages, etc.)
 		var stat_type = $(this).attr("data-stat-type");		//Get the stat type.  (All, With Hammer, Without Hammer, etc.)
 		if ($(this).attr("class").indexOf("clicked") >= 0) {
-			console.log("ASDF");
 			$("[data-group='" + group + "'] .ghost-button").removeClass("clicked");
 			update(group, "all");
 		}
@@ -24,21 +27,35 @@ $(document).ready(function() {
 
 //Initiatilize the graph variables
 function init_graphs() {
+	Chart.defaults.global.responsive = false;
 	$("[data-type='graph']").each(function() {
 		var ctx = document.getElementById($(this).attr("id")).getContext("2d");
-		var myNewChart = new Chart(ctx).Pie(chartsData[$(this).attr("data-source")]);
+		charts[$(this).attr("id")] = new Chart(ctx).Pie(chartsData[$(this).attr("data-source")]);
 	});
 }
 
 //Updates the given group (Games, Player Percentages, etc.) for the given stat type (All, With Hammer, Without Hammer etc)
 function update(group, stat_type, startAtZero) {
 	if (startAtZero === undefined) startAtZero = false;
-	updateGraphs();
+	updateGraphs(group, stat_type);
 	updateNumbers(group, stat_type, startAtZero);
 }
 
-function updateGraphs() {
-	
+function updateGraphs(group, stat_type) {
+	//Get all graphs in the group and update them so they show the stats for the new stat type. 
+	$("[data-group='" + group + "'] [data-type='graph'] ").each(function() {
+		//If chart type is Pie Chart
+		if ($(this).attr("data-graph-type") == "pie") {
+			//Get all possible stats for this chart
+			var chart_stats = $(this).attr("data-stats").split(" ");
+			//Update each area of the chart
+			for (var i = 0; i < charts[$(this).attr("id")].segments.length; i++) {
+				charts[$(this).attr("id")].segments[i].value = stats[stat_type][chart_stats[i]];
+				//console.log(stats[stat_type][chart_stats[i]]);
+			}
+		}
+		charts[$(this).attr("id")].update();
+	});
 }
 
 function updateNumbers(group, stat_type, startAtZero) {	
