@@ -30,7 +30,7 @@
 	<section class="player-name">
 	<h1>
 		<?php 	$name = get_player_name($_GET["player"]);
-				echo $name["first_name"] . "<span>" . $name["last_name"] . "</span>";
+				echo $name["first_name"] . "<span>&shy;" . $name["last_name"] . "</span>";
 		?>
 	</h1>
 	</section>

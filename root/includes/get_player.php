@@ -12,7 +12,9 @@
 
 	//Return array of player stats
 	function get_player_stats($player_id) {	
-		$player_stats = \stats\get_player_stats($player_id);
-		return array("all" => $player_stats, "with"=> $player_stats, "without"=>$player_stats);
+		$player_stats = \stats\get_player_stats($player_id, "all");
+		return array("all" => \stats\get_player_stats($player_id, "all"), 
+					 "with"=> \stats\get_player_stats($player_id, "with"), 
+					 "without"=>\stats\get_player_stats($player_id, "without"));
 	}
 ?>

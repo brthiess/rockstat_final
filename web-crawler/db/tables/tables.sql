@@ -125,6 +125,7 @@ CREATE TABLE game_team (
 
 CREATE TABLE player_stats_derived (
 	player_id INT NOT NULL,
+	stat_type VARCHAR(10),
 	games INT,
 	games_rank INT,
 	wins INT,
@@ -133,7 +134,8 @@ CREATE TABLE player_stats_derived (
 	losses_rank INT,
 	win_percentage INT,
 	win_percentage_rank INT,
-	loss_percentage INT
+	loss_percentage INT,
+	loss_percentage_rank INT
 );
 
 
