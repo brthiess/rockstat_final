@@ -51,7 +51,6 @@ function updateGraphs(group, stat_type) {
 			//Update each area of the chart
 			for (var i = 0; i < charts[$(this).attr("id")].segments.length; i++) {
 				charts[$(this).attr("id")].segments[i].value = stats[stat_type][chart_stats[i]];
-				//console.log(stats[stat_type][chart_stats[i]]);
 			}
 		}
 		charts[$(this).attr("id")].update();

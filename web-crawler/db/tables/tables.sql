@@ -9,6 +9,8 @@ DROP TABLE IF EXISTS player_team;
 DROP TABLE IF EXISTS team;
 DROP TABLE IF EXISTS player;
 
+DROP TABLE IF EXISTS player_stats_derived;
+
 
 CREATE TABLE player (
 	player_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -104,6 +106,36 @@ CREATE TABLE game_team (
 	FOREIGN KEY (game_id) REFERENCES game(game_id),
 	FOREIGN KEY (team_id) REFERENCES team(team_id)
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE player_stats_derived (
+	player_id INT NOT NULL,
+	games INT,
+	games_rank INT,
+	wins INT,
+	wins_rank INT,
+	losses INT,
+	losses_rank INT,
+	win_percentage INT,
+	win_percentage_rank INT,
+	loss_percentage INT
+);
+
 
 
 

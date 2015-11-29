@@ -62,4 +62,14 @@ include_once 'db_connect.php';
 		return $result->fetch_all(MYSQLI_ASSOC);
 	}
 	
+	//Gets the player name by the given ID
+	function get_player_name($id) {
+		$conn = db_connect();
+		$stmt = $conn->prepare("CALL search_player_by_id(?)");
+		$stmt->bind_param("i", $id);
+		$stmt->execute();	
+		$result = $stmt->get_result();
+		return $result->fetch_all(MYSQLI_ASSOC)[0];
+	}
+	
 ?>

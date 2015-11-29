@@ -1,6 +1,6 @@
 <?php
 
-	include_once "/db/search_db.php";
+	include_once "/db/db_search.php";
 	include_once "search-item.php";
 	
 	$search_results = \search\get_search_results($_GET['search']);
