@@ -1,0 +1,13 @@
+Player Stats:
+
+	Games:
+		By Year:
+			With or Without Hammer:
+				# of Games and rank
+				Win % and Rank
+			
+	Money
+		By Year:
+			Money Earned and Rank
+		
+		

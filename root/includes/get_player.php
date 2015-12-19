@@ -11,10 +11,10 @@
 	
 
 	//Return array of player stats
-	function get_player_stats($player_id) {	
-		$player_stats = \stats\get_player_stats($player_id, "all");
-		return array("all" => \stats\get_player_stats($player_id, "all"), 
+	function get_player_stats($player_id) {			
+		$player_stats = array("all" => \stats\get_player_stats($player_id, "all"), 
 					 "with"=> \stats\get_player_stats($player_id, "with"), 
 					 "without"=>\stats\get_player_stats($player_id, "without"));
+		return $player_stats +  \stats\get_player_money($player_id);
 	}
 ?>

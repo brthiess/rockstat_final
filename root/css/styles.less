@@ -15,11 +15,21 @@
 @gray: #696969;
 @darkGray: #666666; 
 @gold: #B79D59;
+@green: #27ae60;
 
+.green {
+	color: @green;
+}
+
+.gray-text {
+	color: beige;
+}
 
 /*----------Fonts--------------*/
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
 
+
+/*-------- Global Styles ---------*/
 * {
 margin: 0;
 padding: 0;
@@ -53,16 +63,40 @@ a {
 a:hover {
 	text-decoration: underline;
 }
-
-.gray-text {
-	color: beige;
-}
 .invisible {
 	display:none;
 }
 .right {
 	float: right;
 }
+.col-6 {
+	width: 50%;
+}
+.col-12 {
+	width: 100%;
+}
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 70%;
+    margin: 20px auto;
+    border: 3px solid #333;
+    font-size: 30px;
+    font-weight: 700;
+    padding: 10px 15px;
+    background-image: url(/images/down-arrow.svg);
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: right 20px top 50%;
+    display: block;
+	font-family: Montserrat,"Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;
+	outline: none;
+}
+
+
+
+
 
 /************************
 Landing Page
@@ -114,34 +148,39 @@ Landing Page
 }
 
 #search-input{
-    width: 100%;
-    height: 40px;
-    outline: none;
-    border: none;
+width: 100%;
+    height: 50px;
+    outline: 0;
     padding: 5px 10px;
     font-size: 18px;
     font-family: "Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;
-	z-index:99;
-	border: 1px solid @lightGray;
+    z-index: 99;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
 }
 
 #search-button {
-	text-indent:99em;
+    text-indent: 99em;
     position: absolute;
-    top: 7%;
-    right: -3%;
-    background-image: url(/images/search-icon-thin.png);
-    width: 44px;
-    height: 44px;
+    top: 2px;
+    bottom: 2px;
+    right: 2px;
+    background-image: url(/images/search-icon-small.png);
+    width: 60px;
     cursor: pointer;
-    background-size: contain;
-	background-color:white;
-	border:none;
+    background-size: 20px 20px;
+    background-position: 50% 50%;
+    background-color: #fff;
+    border: none;
+    background-repeat: no-repeat;
+    opacity: .6;
 }
 
 #search-button:hover {
-	background-color: #ddd;
+	background-color: @green;
+	background-image: url(/images/search-icon-small-white.png);
 	border-radius:3px;
+	opacity: 1;
 }
 
 .footer {
@@ -181,6 +220,7 @@ Banner
 	background: white;
 	width: 100%;
 	height: 80px;
+	box-shadow: 0px 0px 10px #aaa;
 	#banner-search-container{
 		position:relative;
 		top: 18px;
@@ -375,7 +415,6 @@ Stats Page
 		border-top: 1px solid #ccc;		
 		&>.sub-fact {
 			position: relative;
-		    width: 50%;
 			display: inline-block;
 			height: 100%;
 			padding-top: 20px;
@@ -395,15 +434,16 @@ Stats Page
 				max-width: 100%;
 			}
 			.legend {
-				font-size: 14px;
+				font-size: 24px;
 				.wins {
 					color: @lightBlue;
+					
 				}
 				.losses {
 					color: @red
 				}
 				.number {
-					font-size: 20px;
+					font-size: 30px;
 				}
 			}
 		}
@@ -422,6 +462,9 @@ Stats Page
 	}
 	.number {
 		font-size: 110px;
+		&.money {
+			font-size: 85px;
+		}
 	}	
 	.button-container {
 		width: 50%;
@@ -440,6 +483,9 @@ Stats Page
 	}
 	.ghost-button.clicked {
 		background: #e3e3e3;
+	}
+	p {
+		display: inline-block;
 	}
 
 }
@@ -466,16 +512,14 @@ Stats Page
 	}
 	
 	#search-button {
-		right:2%;
 		background-image: url(/images/search-icon-no-background.png);
-		width: 35px;
-		height: 35px;
+		width: 40px;
 	}
 	
 	#search-input {
-		width: 81%;
-		height: 30px;
-		padding-right: 15%;
+		width: 100%;
+		height: 50px;
+		padding-right: 15%
 	}
 
 	

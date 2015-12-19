@@ -14,6 +14,7 @@ BEGIN
   DECLARE stat_type_var VARCHAR(10);
   DECLARE number_of_stat_types INT DEFAULT 3;
   DECLARE i INT DEFAULT 0;
+  DECLARE current_season_start DATE;
   
   
 WHILE i < number_of_stat_types DO
@@ -141,14 +142,67 @@ WHILE i < number_of_stat_types DO
 	  player_stats_derived.loss_percentage DESC) AA) A
 	  ON p.player_id = A.player_id
 	  SET p.loss_percentage_rank = A.rank + 1
-	  WHERE p.stat_type = stat_type_var; 
-	  
-	  
+	  WHERE p.stat_type = stat_type_var; 	  
 	  
 	
     SET i=i+1;
 END WHILE;
   
+  
+  -- ------------ Money Earned Rank-------------------------
+UPDATE 	player_money_derived
+SET 	money_earned = 0
+WHERE 	money_earned IS NULL;
+
+SET current_season_start =  MAKEDATE(YEAR(NOW()), 213);
+WHILE (FLOOR(DATEDIFF(current_season_start, DATE(CURDATE()))/365) > -11) DO
+	
+	UPDATE player_money_derived p
+	INNER JOIN 
+	(SELECT player_id, rank FROM
+	( 
+	SELECT
+	  player_money_derived.player_id,
+	  player_money_derived.money_earned,
+	  @prev := @curr,
+	  @curr := money_earned,
+	  @rank := IF(@prev = @curr, @rank, @rank + @i) AS rank,
+	  IF(@prev <> money_earned, @i:=1, @i:=@i+1) AS counter
+	FROM
+	  player_money_derived,
+	  (SELECT @curr := null, @prev := null, @rank := 0, @i := 0) tmp_tbl
+	WHERE season_start = current_season_start
+	ORDER BY
+	  player_money_derived.money_earned DESC) AA) A
+	  ON p.player_id = A.player_id
+	  SET p.money_earned_rank = A.rank + 1
+	  WHERE p.season_start = current_season_start;
+	  
+	  
+	SET current_season_start = DATE_ADD(current_season_start, INTERVAL '-1'  YEAR);
+
+END WHILE;
+
+	UPDATE player_money_derived p
+	INNER JOIN 
+	(SELECT player_id, rank FROM
+	( 
+	SELECT
+	  player_money_derived.player_id,
+	  player_money_derived.money_earned,
+	  @prev := @curr,
+	  @curr := money_earned,
+	  @rank := IF(@prev = @curr, @rank, @rank + @i) AS rank,
+	  IF(@prev <> money_earned, @i:=1, @i:=@i+1) AS counter
+	FROM
+	  player_money_derived,
+	  (SELECT @curr := null, @prev := null, @rank := 0, @i := 0) tmp_tbl
+	WHERE season_start IS NULL
+	ORDER BY
+	  player_money_derived.money_earned DESC) AA) A
+	  ON p.player_id = A.player_id
+	  SET p.money_earned_rank = A.rank + 1
+	  WHERE p.season_start IS NULL;
   
   RETURN 1;
 				

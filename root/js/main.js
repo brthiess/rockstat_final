@@ -1,5 +1,5 @@
 $(document).ready(function() {	
-	 $( "#search-input" ).autoComplete({
+	 $( "#search-input-banner, #search-input" ).autoComplete({
       source: function( search_term, suggest) {
         $.ajax({
           url: "/includes/get_autocomplete_results.php",

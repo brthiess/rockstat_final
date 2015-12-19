@@ -9,15 +9,20 @@ $(document).ready(function() {
 	$(".ghost-button").click(function() {
 		var group = $(this).closest(".section").attr("data-group");	//Get the group the button was clicked in.  (Games, Player Percentages, etc.)
 		var stat_type = $(this).attr("data-stat-type");		//Get the stat type.  (All, With Hammer, Without Hammer, etc.)
-		if ($(this).attr("class").indexOf("clicked") >= 0) {
+		if ($(this).attr("class").indexOf("clicked") >= 0) { //Update stats for ALL stats types
 			$("[data-group='" + group + "'] .ghost-button").removeClass("clicked");
 			update(group, "all");
 		}
-		else {
+		else {		//Update stats for specified stat type
 			$("[data-group='" + group + "'] .ghost-button").removeClass("clicked");
 			$(this).addClass("clicked");
 			update(group, stat_type);
 		}		
+	});
+	$("select").change(function() {
+		var group = $(this).closest(".section").attr("data-group");
+		var stat_type = $(this).find('option:selected').attr("data-stat-type");
+		update(group, stat_type);
 	});
 	init_graphs();
 	update("games", "all", true);
@@ -65,7 +70,7 @@ function updateNumbers(group, stat_type, startAtZero) {
 	
 //Animate the given number to change to the new number
 function count(div, ending_number, startAtZero) {
-		var starting_number = $(div).text().match(/\d+/)[0];	//Start with previous number unless page has just loaded
+		var starting_number = $(div).text().replace(/\D/g, '');	//Start with previous number unless page has just loaded
 		if (startAtZero) {
 			starting_number = 0;
 		}
@@ -75,7 +80,7 @@ function count(div, ending_number, startAtZero) {
 			duration: 800,
 			easing: 'swing',
 			step: function (now) {
-				$(this).text(Math.ceil(now));
+				$(this).text(Math.ceil(now).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 				$(this).trigger("numberChanged", Math.ceil(now));
 			}
 		});

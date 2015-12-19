@@ -9,10 +9,10 @@
 		</div>
 		<div class="section-subtitle"># of Games</div>
 		<div class="section-fact subsection">
-			<span class="sub-fact">
+			<span class="sub-fact col-6">
 				<span class="number" data-type="number" data-stat="games"><p><?php echo $stats["all"]["games"]?></p></span>
 			</span>
-			<span class="sub-fact">
+			<span class="sub-fact col-6">
 				<span class="graph">
 					<canvas id="win-chart" data-type="graph" data-graph-type="pie" data-source="win_data"  data-stats="win_percentage loss_percentage"></canvas>
 					<div class="legend">

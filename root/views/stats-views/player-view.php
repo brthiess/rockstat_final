@@ -2,6 +2,7 @@
 
 	include_once "/includes/get_player.php";
 	
+	
 	$stats = get_player_stats($_GET["player"]);
 	echo "<script>var stats = " . json_encode($stats) . ";</script>";
 
@@ -35,4 +36,6 @@
 	</h1>
 	</section>
 
-	<?php include "sections/games-view.php";?>
+	<?php include "sections/player/games-view.php";?>
+	
+	<?php include "sections/player/money-view.php";?>

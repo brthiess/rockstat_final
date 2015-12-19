@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS team;
 DROP TABLE IF EXISTS player;
 
 DROP TABLE IF EXISTS player_stats_derived;
+DROP TABLE IF EXISTS player_money_derived;
 
 
 CREATE TABLE player (
@@ -110,19 +111,6 @@ CREATE TABLE game_team (
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 CREATE TABLE player_stats_derived (
 	player_id INT NOT NULL,
 	stat_type VARCHAR(10),
@@ -135,7 +123,16 @@ CREATE TABLE player_stats_derived (
 	win_percentage INT,
 	win_percentage_rank INT,
 	loss_percentage INT,
-	loss_percentage_rank INT
+	loss_percentage_rank INT,
+	FOREIGN KEY (player_id) REFERENCES player(player_id)
+);
+
+CREATE TABLE player_money_derived (
+	player_id INT NOT NULL,
+	season_start DATE,
+	season_end DATE,
+	money_earned INT,
+	money_earned_rank INT
 );
 
 

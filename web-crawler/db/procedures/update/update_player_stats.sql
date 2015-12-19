@@ -8,6 +8,13 @@ BEGIN
   DECLARE finished INT DEFAULT FALSE;
   DECLARE player_id_cursor INT;
   
+  -- Money
+  DECLARE current_season_start DATE;
+  DECLARE current_season_end DATE;
+  DECLARE amount_won_var INT;
+  
+  
+  -- Games
   DECLARE games 		INT DEFAULT 0;
   DECLARE games_with 	INT DEFAULT 0;
   DECLARE games_without INT DEFAULT 0;
@@ -216,7 +223,72 @@ BEGIN
 	WHERE		player_id = player_id_cursor
 	AND			stat_type = 'without';
 
-
+	-- ---------------------Money Earned----------------------------
+	
+	-- Get money earned all time
+	SELECT 	SUM(amount_won) 
+	INTO 	amount_won_var
+	FROM	event_team et
+	INNER JOIN player_team pt ON pt.team_id = et.team_id
+	INNER JOIN event e ON e.event_id = et.event_id
+	WHERE 	player_id = player_id_cursor;
+	
+	-- Check if the record does not exist in the table
+	IF NOT EXISTS (SELECT 	*	 
+				   FROM 	player_money_derived
+				   WHERE	player_id = player_id_cursor
+				   AND		season_start IS NULL)
+	THEN
+		INSERT INTO player_money_derived (player_id, season_start, season_end)
+		VALUES		(player_id_cursor, NULL, NULL);
+	END IF;
+	
+	UPDATE		player_money_derived
+	SET			money_earned = amount_won_var
+	WHERE		player_id = player_id_cursor
+	AND			season_start IS NULL
+	AND			season_end IS NULL;
+	
+	
+	-- Get current season
+	SET current_season_start =  MAKEDATE(YEAR(NOW()), 213);
+	
+	-- Get Money won for current player for each year
+	year_loop: LOOP		
+		-- Only check up to 10 years back
+		IF (FLOOR(DATEDIFF(current_season_start, DATE(CURDATE()))/365) < -10)   THEN
+		  LEAVE year_loop;
+		END IF;
+		
+		SET current_season_end = DATE_ADD(current_season_start, INTERVAL 1 YEAR);	
+		
+		SELECT 	SUM(amount_won) 
+		INTO 	amount_won_var
+		FROM	event_team et
+		INNER JOIN player_team pt ON pt.team_id = et.team_id
+		INNER JOIN event e ON e.event_id = et.event_id
+		WHERE 	player_id = player_id_cursor
+		AND		e.start_date BETWEEN 	current_season_start
+								AND		current_season_end;
+		
+		-- Check if the record does not exist in the table
+		IF NOT EXISTS (SELECT 	*	 
+					   FROM 	player_money_derived
+					   WHERE	player_id = player_id_cursor
+					   AND		season_start = current_season_start)
+		THEN
+			INSERT INTO player_money_derived (player_id, season_start, season_end)
+			VALUES		(player_id_cursor, current_season_start, current_season_end);
+		END IF;
+		
+		UPDATE		player_money_derived
+		SET			money_earned = amount_won_var
+		WHERE		player_id = player_id_cursor
+		AND			season_start = current_season_start
+		AND			season_end = current_season_end;
+		
+		SET current_season_start = DATE_ADD(current_season_start, INTERVAL '-1'  YEAR);
+	END LOOP;
 	
   END LOOP;
 
