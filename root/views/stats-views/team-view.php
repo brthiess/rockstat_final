@@ -1,9 +1,9 @@
 <?php
 
-	include_once "/includes/get_player.php";
+	include_once "/includes/get_team.php";
 	
-	$player_id = $_GET["id"];
-	$stats = get_player_stats($player_id);
+	$id = $_GET["id"];
+	$stats = get_team_stats($id);
 	echo "<script>var stats = " . json_encode($stats) . ";</script>";
 
 ?>
@@ -30,8 +30,8 @@
 	
 	<section class="name">
 	<h1>
-		<?php 	$name = get_player_name($player_id);
-				echo $name["first_name"] . "<span>&shy;" . $name["last_name"] . "</span>";
+		<?php 	$name = get_team_name($id);
+				echo "Team" . "<span>&shy;" . $name["team_name"] . "</span>";
 		?>
 	</h1>
 	</section>

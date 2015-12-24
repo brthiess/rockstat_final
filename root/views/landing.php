@@ -4,8 +4,8 @@
 			<img src="/images/logo2-gray4.png"/>
 		</div>
 		<div id="search-input-container">
-			<form action="index.php" method="get">
-				<input id="search-input" name="search" placeholder="Search curling stats..."></input>
+			<form action="" method="get">
+				<input id="search-input" name="q" placeholder="Search curling stats..."></input>
 				<input type="submit" id="search-button"></input>
 			</form>
 		</div>

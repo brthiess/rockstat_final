@@ -3,7 +3,7 @@
 	include_once "/db/db_search.php";
 	include_once "search-item.php";
 	
-	$search_results = \search\get_search_results($_GET['search']);
+	$search_results = \search\get_search_results($_GET['q']);
 	echo '<div id="search-results-number">' . count($search_results) . ' Results Found</div>';
 	foreach($search_results as $search_item) {
 		$search_item['description'] = get_description($search_item['id'], $search_item['type']);

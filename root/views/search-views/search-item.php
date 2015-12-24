@@ -10,7 +10,7 @@
 			</div>
 			<div class="search-name"><?php echo $name?></div>
 			<div class="search-description"><?php echo $description?></div>
-			<a href="/?<?php echo strtolower($type);?>=<?php echo $id;?>"></a>
+			<a href="/<?php echo strtolower($type);?>-<?php echo $id;?>/"></a>
 		</div>
 	<?php
 	}
